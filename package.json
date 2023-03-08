@@ -1,16 +1,26 @@
 {
-  "name": "nlp-api",
+  "name": "@imaginelife/nlp-server",
   "version": "0.0.1",
-  "description": "An NLP API",
+  "description": "An API that serve NLP Content....",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node ."
+    "local": "nodemon .",
+    "start": "node .",
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "keywords": [],
-  "author": "",
+  "keywords": [
+    "openAI",
+    "api",
+    "express"
+  ],
+  "author": "Eric (Jake) Laursen",
   "license": "ISC",
+  "type": "module",
   "dependencies": {
+    "cors": "^2.8.5",
     "express": "^4.18.2"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.20"
   }
 }
