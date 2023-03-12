@@ -4,7 +4,7 @@
   "description": "An API that serve NLP Content....",
   "main": "index.js",
   "scripts": {
-    "local": "nodemon .",
+    "local": "ALLOWED_HOST=localhost ALLOWED_QUERY=local-gats nodemon .",
     "start": "node .",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
