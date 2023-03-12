@@ -31,6 +31,23 @@ function buildArrOfWords(s) {
   return wordTokenizer.tokenize(s);
 }
 
+function getLongestWord(arr) {
+  return arr.reduce((a, b) => a.length > b.length ? a : b)
+}
+
+function prepSentenceObject(s) { 
+  const thisSentenceWordTokens = buildArrOfWords(s);
+  const sentScore = affinityAnalyzer.getSentiment(thisSentenceWordTokens);
+
+  let thisObj = new Map();
+  thisObj.set('sentence', s);
+  thisObj.set('sentimentScore', sentScore);
+  thisObj.set('length', thisSentenceWordTokens);
+  thisObj.set('longestWord', getLongestWord(s));
+
+  return thisObj;
+}
+
 export default function postHandler(req, res) {
   if (!req?.body?.text) {
     throw new Error('expects a json request in the body with a "text" key, like this -> { text: `here`}')
@@ -40,15 +57,7 @@ export default function postHandler(req, res) {
 
   const sentences = buildArrOfSentences(req.body.text);
 
-  const resObj = sentences.map(s => {
-    let thisObj = {};
-    thisObj.sentence = s;
-
-    const thisSentenceWordTokens = buildArrOfWords(s);
-    const sentScore = affinityAnalyzer.getSentiment(thisSentenceWordTokens)
-    thisObj.sentiment = sentScore;
-    return thisObj;
-  })
+  const sentenceObj = sentences.map(prepSentenceObject);
   
-  return res.json(resObj);
+  return res.json(sentenceObj);
 }
