@@ -39,12 +39,14 @@ export default function postHandler(req, res) {
   const { affinityAnalyzer } = setupNLPTools();
 
   const sentences = buildArrOfSentences(req.body.text);
+
   const resObj = sentences.map(s => {
     let thisObj = {};
     thisObj.sentence = s;
 
     const thisSentenceWordTokens = buildArrOfWords(s);
-    thisObj.sentiment = affinityAnalyzer.getSentiment(thisSentenceWordTokens);
+    const sentScore = affinityAnalyzer.getSentiment(thisSentenceWordTokens)
+    thisObj.sentiment = sentScore;
     return thisObj;
   })
   
