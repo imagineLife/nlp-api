@@ -1,0 +1,3 @@
+let stateObj = {}
+
+export { stateObj };
