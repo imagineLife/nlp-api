@@ -1,14 +1,6 @@
-/*
-  TODO:
-  - expect some req.body params
-    - text
-  - allow a string of sentences
-  - returns
-    - array of objects: 
-     { text: '...', sentiment: NumberHere }
-*/
 import natural from 'natural';
-import summaryObj from './summaryObj.js';
+import { convertStringToArr, getWordsByCount, getLongestThirty } from './../../../lib/index.js'
+// import summaryObj from './summaryObj.js';
 
 function setupNLPTools() {
   // https://naturalnode.github.io/natural/sentiment_analysis.html
@@ -43,12 +35,16 @@ export default function postHandler(req, res) {
     );
   }
 
+  const entireArray = convertStringToArr(req.body.text);
+  const wordsByCount = getWordsByCount(entireArray)
+  const longestThirty = getLongestThirty(entireArray)
+  
+  
   const sentences = buildArrOfSentences(req.body.text);
 
   let sentenceArr = [];
   let internalSummary = {
     sentences: 0,
-    agvWordsPerSentence: 0,
     words: 0,
     sentiments: {
       positive: {
@@ -64,6 +60,8 @@ export default function postHandler(req, res) {
         percent: 0,
       },
     },
+    wordsByCount,
+    longestThirty
   };
   sentences.forEach((s) => {
     const { affinityAnalyzer } = setupNLPTools();
