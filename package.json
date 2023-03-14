@@ -5,7 +5,8 @@
   "main": "index.js",
   "scripts": {
     "local": "ALLOWED_HOST=localhost ALLOWED_QUERY=local-gats nodemon .",
-    "start": "node .",
+    "local-node": "ALLOWED_HOST=localhost ALLOWED_QUERY=local-gats node .",
+    "start": "ALLOWED_HOST=$ALLOWED_HOST ALLOWED_QUERY=$ALLOWED_QUERY node .",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [
