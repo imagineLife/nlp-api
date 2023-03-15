@@ -29,11 +29,6 @@ function getLongestWord(arr) {
 }
 
 export default function postHandler(req, res) {
-  if (!req?.body?.text) {
-    throw new Error(
-      'expects a json request in the body with a "text" key, like this -> { text: `here`}'
-    );
-  }
 
   const entireArray = convertStringToArr(req.body.text);
   const wordsByCount = getWordsByCount(entireArray)
