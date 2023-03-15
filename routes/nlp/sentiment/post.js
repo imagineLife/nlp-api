@@ -1,32 +1,12 @@
-import natural from 'natural';
-import { convertStringToArr, getWordsByCount, getLongestThirty } from './../../../lib/index.js'
-// import summaryObj from './summaryObj.js';
-
-function setupNLPTools() {
-  // https://naturalnode.github.io/natural/sentiment_analysis.html
-  const { PorterStemmer, SentimentAnalyzer } = natural;
-  const language = 'English';
-
-  const SENTIMENT_TYPE = 'afinn';
-  const affinityAnalyzer = new SentimentAnalyzer(language, PorterStemmer, SENTIMENT_TYPE);
-  return { affinityAnalyzer };
-}
-
-function buildArrOfSentences(txt) {
-  const { SentenceTokenizer } = natural;
-  const sentenceTokenizer = new SentenceTokenizer();
-  return sentenceTokenizer.tokenize(txt);
-}
-
-function buildArrOfWords(s) {
-  const { WordTokenizer } = natural;
-  const wordTokenizer = new WordTokenizer();
-  return wordTokenizer.tokenize(s);
-}
-
-function getLongestWord(arr) {
-  return arr.reduce((a, b) => (a.length > b.length ? a : b));
-}
+import {
+  buildArrOfSentences,
+  buildArrOfWords,
+  convertStringToArr,
+  getLongestThirty,
+  getLongestWord,
+  getWordsByCount,
+  setupNLPTools
+} from './../../../lib/index.js';
 
 export default function postHandler(req, res) {
 
