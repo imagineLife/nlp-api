@@ -13,8 +13,6 @@ export default function postHandler(req, res) {
   const entireArray = convertStringToArr(req.body.text);
   const wordsByCount = getWordsByCount(entireArray)
   const longestThirty = getLongestThirty(entireArray)
-  
-  
   const sentences = buildArrOfSentences(req.body.text);
 
   let sentenceArr = [];

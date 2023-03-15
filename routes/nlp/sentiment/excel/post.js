@@ -1,4 +1,4 @@
-import { buildArrOfWords, setupNLPTools } from './../../../lib/index.js';
+import { buildArrOfWords, setupNLPTools } from './../../../../lib/index.js';
 
 export default function excelPost(req, res) {
   /*
@@ -13,7 +13,7 @@ export default function excelPost(req, res) {
         // set results object keys as question-text via first answer row
         resArr[qIdx] = {
           question,
-          answers: []
+          answers: [],
         };
       });
     }
@@ -26,9 +26,9 @@ export default function excelPost(req, res) {
       const sentScore = Number(affinityAnalyzer.getSentiment(thisSentenceWordTokens).toFixed(1));
 
       resArr[qIdx].answers.push({
-            text: answerRow[question],
-            sentimentScore: sentScore || 0,
-          })
+        text: answerRow[question],
+        sentimentScore: sentScore || 0,
+      });
     });
   });
 
