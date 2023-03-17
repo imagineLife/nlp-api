@@ -11,7 +11,7 @@ export default function setupExpress() {
     Middlewares
   */ 
   expressObj.use(cors());
-  expressObj.use(express.json());
+  expressObj.use(express.json({limit: '15mb'}));
 
   /*
     routes
@@ -22,6 +22,6 @@ export default function setupExpress() {
     START the server
   */ 
   expressObj.listen(PORT_TO_USE, () => {
-    console.log(`open ai server up & running on port ${PORT_TO_USE}!`);
+    console.log(`nlp ai server up & running on port ${PORT_TO_USE}!`);
   });
 }
