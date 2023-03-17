@@ -1,4 +1,10 @@
-import { buildArrOfWords, setupNLPTools, getWordsByCount, mergeWordsByCount } from './../../../../lib/index.js';
+import {
+  buildArrOfWords,
+  setupNLPTools,
+  getWordsByCount,
+  mergeWordsByCount,
+  getSentenceThemes,
+} from './../../../../lib/index.js';
 import { mean, median, max, min } from 'd3-array';
 
 // function mergeAndAddObjVals(startingArr, newObj) {
@@ -24,6 +30,7 @@ export default function excelPost(req, res) {
   req.body.text[0].forEach((answerRow) => {
     Object.keys(answerRow).forEach((question, qIdx) => {
       const thisAnswer = answerRow[question];
+      const sentenceThemes = getSentenceThemes(thisAnswer);
       const thisSentenceWordTokens = buildArrOfWords(thisAnswer);
       const sentScore = Number(affinityAnalyzer.getSentiment(thisSentenceWordTokens).toFixed(1));
       const answerWordsByCount = getWordsByCount(thisSentenceWordTokens);
@@ -31,6 +38,7 @@ export default function excelPost(req, res) {
       const answerObj = {
         text: answerRow[question],
         sentimentScore: sentScore || 0,
+        themes: sentenceThemes,
       };
       resArr[qIdx].answers.push(answerObj);
 
