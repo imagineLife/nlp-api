@@ -1,3 +1,5 @@
-let stateObj = {}
+let stateObj = {
+  maps: {}
+}
 
 export { stateObj };
