@@ -35,7 +35,8 @@ export default function postHandler(req, res) {
       },
     },
     wordsByCount,
-    longestThirty
+    longestThirty,
+    themes: []
   };
   sentences.forEach((s,sidx) => {
     const { affinityAnalyzer } = setupNLPTools();
@@ -50,6 +51,7 @@ export default function postHandler(req, res) {
     thisObj.length = thisSentenceWordTokens.length;
     thisObj.longestWord = getLongestWord(thisSentenceWordTokens);
     thisObj.themes = sentenceThemes;
+    internalSummary.themes.push(sentenceThemes);
     sentenceArr.push(thisObj);
     
     // update summary
@@ -79,6 +81,24 @@ export default function postHandler(req, res) {
       0
     );
   });
+
+  // update summary Theme Data
+  internalSummary.themes = internalSummary.themes.reduce((curObj, sentenceArray) => {
+    let reduceObjCopy = curObj
+    sentenceArray.forEach((themeWord) => {
+      if (!reduceObjCopy[themeWord]) {
+        reduceObjCopy[themeWord] = 1;
+      } else {
+        reduceObjCopy[themeWord] = reduceObjCopy[themeWord] + 1;
+      }
+    });
+    return reduceObjCopy;
+  }, {});
+
+  internalSummary.themes = Object.keys(internalSummary.themes).map((theme) => ({
+    theme,
+    sentences: internalSummary.themes[theme]
+  })).sort((a,b) => b.sentences - a.sentences);
 
   res.json({ summary: internalSummary, sentenceAnalysis: sentenceArr });
   sentenceArr = null;
