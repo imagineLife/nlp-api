@@ -4,6 +4,7 @@ import {
   convertStringToArr,
   getLongestThirty,
   getLongestWord,
+  getSentenceThemes,
   getWordsByCount,
   setupNLPTools
 } from './../../../lib/index.js';
@@ -36,8 +37,9 @@ export default function postHandler(req, res) {
     wordsByCount,
     longestThirty
   };
-  sentences.forEach((s) => {
+  sentences.forEach((s,sidx) => {
     const { affinityAnalyzer } = setupNLPTools();
+    const sentenceThemes = getSentenceThemes(s);
     const thisSentenceWordTokens = buildArrOfWords(s);
     const sentScore = affinityAnalyzer.getSentiment(thisSentenceWordTokens);
 
@@ -47,6 +49,7 @@ export default function postHandler(req, res) {
     thisObj.sentimentScore = sentScore;
     thisObj.length = thisSentenceWordTokens.length;
     thisObj.longestWord = getLongestWord(thisSentenceWordTokens);
+    thisObj.themes = sentenceThemes;
     sentenceArr.push(thisObj);
     
     // update summary
