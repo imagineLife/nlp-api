@@ -4,10 +4,10 @@
   "description": "An API that serve NLP Content....",
   "main": "index.js",
   "scripts": {
-    "local": "ALLOWED_HOST=localhost ALLOWED_QUERY=local-gats nodemon .",
+    "local": "MONGO_AUTH=false MONGO_DB_HOST=localhost MONGO_DB_PORT=27017 MONGO_DB_AUTH_DB=admin ALLOWED_HOST=localhost ALLOWED_QUERY=local-gats nodemon .",
     "local-node": "ALLOWED_HOST=localhost ALLOWED_QUERY=local-gats node .",
     "start": "ALLOWED_HOST=$ALLOWED_HOST ALLOWED_QUERY=$ALLOWED_QUERY node .",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "node --experimental-vm-modules node_modules/jest/bin/jest.js"
   },
   "keywords": [
     "openAI",
@@ -21,10 +21,16 @@
     "cors": "^2.8.5",
     "d3-array": "^3.2.2",
     "express": "^4.18.2",
+    "jest": "^29.5.0",
     "mongodb": "^5.1.0",
     "natural": "^6.2.0"
   },
   "devDependencies": {
     "nodemon": "^2.0.20"
+  },
+  "jest": {
+    "setupFilesAfterEnv": [
+      "<rootDir>/lib/config/test-env.js"
+    ]
   }
 }

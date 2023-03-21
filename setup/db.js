@@ -11,6 +11,25 @@ async function setupDB(params) {
     // Connect
     const MongoClient = new DB({
       connectionObj: {
+        username: process.env.MONGO_DB_USER,
+        pw: process.env.MONGO_DB_PW,
+        host: params.host,
+        port: params.port,
+        authDB: process.env.MONGO_DB_AUTH_DB,
+      },
+    });
+    await MongoClient.connect();
+    return MongoClient;
+  } catch (e) {
+    return null;
+  }
+}
+
+async function setupTestDB(params) {
+  try {
+    // Connect
+    const MongoClient = new DB({
+      connectionObj: {
         host: params.host,
         port: params.port,
       },
@@ -23,3 +42,4 @@ async function setupDB(params) {
 }
 
 export default setupDB;
+export { setupTestDB };
