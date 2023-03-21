@@ -1,5 +1,3 @@
 import expressSetup from './express.js';
-
-export { 
-  expressSetup,
-}
+import setupDB from './db.js';
+export { expressSetup, setupDB };
