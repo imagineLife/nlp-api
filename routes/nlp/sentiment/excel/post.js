@@ -23,28 +23,31 @@ export default function excelPost(req, res) {
       answers: [],
       sentimentScores: [],
       wordsByCount: [],
+      themes: []
     };
   });
 
-  // fill results object question ANSWERS array with stats
+  // EACH ANSWER: fill results object question ANSWERS array with stats
   req.body.text[0].forEach((answerRow) => {
-    Object.keys(answerRow).forEach((question, qIdx) => {
-      const thisAnswer = answerRow[question];
+    Object.keys(answerRow).forEach((answer, qIdx) => {
+      const thisAnswer = answerRow[answer];
       const sentenceThemes = getSentenceThemes(thisAnswer);
       const thisSentenceWordTokens = buildArrOfWords(thisAnswer);
       const sentScore = Number(affinityAnalyzer.getSentiment(thisSentenceWordTokens).toFixed(1));
       const answerWordsByCount = getWordsByCount(thisSentenceWordTokens);
 
       const answerObj = {
-        text: answerRow[question],
+        text: answerRow[answer],
         sentimentScore: sentScore || 0,
         themes: sentenceThemes,
       };
+      
       resArr[qIdx].answers.push(answerObj);
 
       /*
-        per-question summary stats population
+        update question summary data with THIS ANSWER data
       */
+      resArr[qIdx].themes = resArr[qIdx].themes.concat(sentenceThemes);
       resArr[qIdx].sentimentScores.push(sentScore);
       const updatedWordsByCount = mergeWordsByCount(resArr[qIdx].wordsByCount, answerWordsByCount);
       resArr[qIdx].wordsByCount = updatedWordsByCount;
@@ -67,6 +70,10 @@ export default function excelPost(req, res) {
     };
 
     delete q.sentimentScores;
+    q.themes = q.themes.reduce(
+      (uniq, theme) => (uniq.includes(theme) ? uniq : [...uniq, theme]),
+      []
+    );
   });
 
   return res.json(resArr);
