@@ -69,6 +69,33 @@ export default function excelPost(req, res) {
       mean: Number(mean(q.sentimentScores).toFixed(1)),
     };
 
+    let sentimentCounts = {
+      positive: {
+        count: 0,
+        percent: 0,
+      },
+      negative: {
+        count: 0,
+        percent: 0,
+      },
+      neutral: {
+        count: 0,
+        percent: 0,
+      },
+    };
+    
+    q.sentimentScores.forEach((ss) => {
+      if (ss < 0) sentimentCounts.negative.count = sentimentCounts.negative.count + 1;
+      if (ss > 0) sentimentCounts.positive.count = sentimentCounts.positive.count + 1;
+      if (ss == 0) sentimentCounts.neutral.count = sentimentCounts.neutral.count + 1;
+    });
+
+    sentimentCounts.positive.percent = Math.round((sentimentCounts.positive.count / q.sentimentScores.length) * 100, 0);
+    sentimentCounts.negative.percent = Math.round((sentimentCounts.negative.count / q.sentimentScores.length) * 100, 0);
+    sentimentCounts.neutral.percent = Math.round((sentimentCounts.neutral.count / q.sentimentScores.length) * 100, 0);
+
+    q.sentimentCounts = sentimentCounts;
+    
     delete q.sentimentScores;
     q.themes = q.themes.reduce(
       (uniq, theme) => (uniq.includes(theme) ? uniq : [...uniq, theme]),
