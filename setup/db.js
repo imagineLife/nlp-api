@@ -13,14 +13,15 @@ async function setupDB(params) {
       connectionObj: {
         username: process.env.MONGO_DB_USER,
         pw: process.env.MONGO_DB_PW,
-        host: params.host,
-        port: params.port,
+        host: params?.host || process.env.MONGO_DB_HOST,
+        port: params?.port || process.env.MONGO_DB_PORT,
         authDB: process.env.MONGO_DB_AUTH_DB,
       },
     });
     await MongoClient.connect();
     return MongoClient;
   } catch (e) {
+    console.log('setupDB Error: ', e.message);
     return null;
   }
 }
