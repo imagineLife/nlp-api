@@ -18,9 +18,9 @@ function createAppDetails(expMinutes) {
 }
 
 export default function getHandler(req, res) {
-  const { hostname, baseUrl, query } = req;
+  const { hostname, query } = req;
 
-  var ip = req?.socket?.remoteAddress || req.headers['x-forwarded-for'];
+  // var ip = req?.socket?.remoteAddress || req.headers['x-forwarded-for'];
 
   assureAllowed({
     hostname,
