@@ -33,5 +33,5 @@ export default function getHandler(req, res) {
 
   stateObj[`${appId}`] = expDate;
 
-  return res.status(200).send(appId);
+  return res.status(200).json({ id: appId });
 }

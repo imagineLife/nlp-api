@@ -9,20 +9,22 @@ export default function allowAccessHandler(req, res) {
       - date SHOULD NOT be before now
   */
   if (!req?.query?.id) {
-    return res.status(422).send('Error: missing required data to allow access');
+    return res.status(422).json({ Error: "missing required data to allow access" });
   }
   const { id: appId } = req.query;
 
   if (!stateObj[`${appId}`]) {
-    res.status(422).send('No App Registration stored for this instance, try starting over!');
+    return res
+      .status(422)
+      .json({ Error: 'No App Registration stored for this instance, try starting over!' });
   }
 
   const savedAppDate = stateObj[`${appId}`];
   if (savedAppDate <= new Date()) {
     delete stateObj[`${appId}`];
-    res.status(422).send('App Registration Expired, try starting over!');
+    return res.status(422).json({ Error: 'App Registration Expired, try starting over!' });
   }
 
   delete stateObj[`${appId}`];
-  return res.status(200).send(`here you go!  ${appId}`);
+  return res.status(200).send({ appId });
 }

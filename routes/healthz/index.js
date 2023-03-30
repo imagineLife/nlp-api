@@ -9,6 +9,6 @@ const healthzRoutes = [
   }
 ];
 
-healthzRoutes.forEach(({ path, handler }) => openApiRouter.use(path, handler));
+healthzRoutes.forEach(({ path, handler }) => openApiRouter.get(path, handler));
 
 export default openApiRouter;

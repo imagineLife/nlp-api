@@ -4,7 +4,7 @@ import {
   getWordsByCount,
   mergeWordsByCount,
   getSentenceThemes,
-} from './../../../../lib/index.js';
+} from './../../../../../lib/index.js';
 import { mean, median, max, min } from 'd3-array';
 
 // function mergeAndAddObjVals(startingArr, newObj) {

@@ -6,8 +6,8 @@ import {
   getLongestWord,
   getSentenceThemes,
   getWordsByCount,
-  setupNLPTools
-} from './../../../lib/index.js';
+  setupNLPTools,
+} from './../../../../lib/index.js';
 
 export default function postHandler(req, res) {
 

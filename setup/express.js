@@ -12,7 +12,10 @@ export default function setupExpress() {
   */ 
   expressObj.use(cors());
   expressObj.use(express.json({limit: '15mb'}));
-
+  expressObj.use((req, res, next) => { 
+    console.log(req.url);
+    next()
+  })
   /*
     routes
   */ 
