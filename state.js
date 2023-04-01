@@ -1,5 +1,8 @@
 let stateObj = {
-  maps: {}
+  maps: {},
+  Collections: {
+    Speeches: null
+  }
 }
 
 export { stateObj };
