@@ -1,5 +1,6 @@
 import { DB } from './../lib/models/db/index.js';
-
+import { Crud } from './../lib/models/crud/index.js'
+import { stateObj } from './../state.js';
 /*
   - takes a db name (string)
     - builds Mongo Client
@@ -42,5 +43,22 @@ async function setupTestDB(params) {
   }
 }
 
+function registerDbCollections(DbObj) {
+  const NlpDb = DbObj.registerDB('Nlp');
+  const SpeechesCollection = new Crud({
+    db: NlpDb,
+    collection: 'Speeches',
+  });
+  stateObj.Collections.Speeches = SpeechesCollection;
+
+  const ThemesCollection = new Crud({
+    db: NlpDb,
+    collection: 'Themes',
+  });
+  stateObj.Collections.Themes = ThemesCollection;
+  console.log('DB: Collections setup')
+  
+}
+
 export default setupDB;
-export { setupTestDB };
+export { setupTestDB, registerDbCollections };
