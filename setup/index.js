@@ -1,3 +1,4 @@
 import expressSetup from './express.js';
 import setupDB, { registerDbCollections } from './db.js';
-export { expressSetup, setupDB, registerDbCollections };
+import { serverKiller } from './serverKills.js';
+export { expressSetup, setupDB, registerDbCollections, serverKiller };
