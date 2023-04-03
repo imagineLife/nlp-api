@@ -1,5 +1,6 @@
 import { Router } from 'express';
 import { stateObj } from './../../../state.js';
+import byIdRouter from './byId/index.js'
 async function getSpeeches(req, res) {
   return res.status(200).json({ get: 'speeches' });
 }
@@ -22,4 +23,5 @@ async function postASpeech(req, res) {
 }
 const speechesRouter = Router();
 speechesRouter.get('/', getSpeeches).post('/', postASpeech);
+speechesRouter.use('/:id', byIdRouter)
 export default speechesRouter;
