@@ -6,7 +6,6 @@ const APP_EXP_MINUTES = 2;
 
 function addMinutes(date, minutes) {
   date.setMinutes(date.getMinutes() + minutes);
-
   return date;
 }
 
