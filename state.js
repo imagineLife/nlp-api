@@ -1,5 +1,5 @@
 let stateObj = {
-  maps: {},
+  themeMaps: {},
   Collections: {
     Speeches: null
   }

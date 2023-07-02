@@ -107,6 +107,5 @@ export default function postHandler(req, res) {
   
   let { summary, sentenceArr } = getTextStats(req.body.text);
 
-  res.json({ summary, sentenceAnalysis: sentenceArr });
-  return;
+  return res.json({ summary, sentenceAnalysis: sentenceArr });
 }
