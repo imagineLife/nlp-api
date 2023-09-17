@@ -7,6 +7,7 @@
     "local": "nodemon .",
     "local-node": "ALLOWED_HOST=localhost ALLOWED_QUERY=local-gats node .",
     "start": "ALLOWED_HOST=$ALLOWED_HOST ALLOWED_QUERY=$ALLOWED_QUERY node .",
+    "start-dev": "ALLOWED_HOST=$ALLOWED_HOST ALLOWED_QUERY=$ALLOWED_QUERY nodemon .",
     "test": "node --experimental-vm-modules node_modules/jest/bin/jest.js",
     "test:coverage": "node --experimental-vm-modules node_modules/jest/bin/jest.js --coverage"
   },
