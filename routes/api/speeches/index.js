@@ -1,9 +1,11 @@
 import { Router } from 'express';
 import byIdRouter from './byId/index.js'
 import postASpeech from './post.js';
+import { speeches } from './../../../state.js';
 
 async function getSpeeches(req, res) {
-  return res.status(200).json({ get: 'speeches' });
+  let data = await speeches().find({}).toArray()
+  return res.status(200).json(data);
 }
 
 const speechesRouter = Router();
