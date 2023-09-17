@@ -5,4 +5,8 @@ let stateObj = {
   }
 }
 
-export { stateObj };
+function speeches() { 
+  return stateObj.Collections?.Speeches.collection
+}
+
+export { stateObj, speeches };
