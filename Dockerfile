@@ -1,0 +1,17 @@
+# USE THIS to debug!
+# CMD ["/bin/sh", "-c", "pwd; ls -la; pwd;"]
+
+FROM node:18-slim
+WORKDIR /app
+COPY package.json package-lock.json  ./
+RUN npm install
+
+COPY index.js state.js ./
+COPY lib/ ./lib
+COPY routes/ ./routes/
+COPY setup/ ./setup/
+EXPOSE 3000
+
+# this run time
+CMD [ "npm","start"]
+# CMD ["/bin/sh", "-c", "echo 'pwd'; pwd; ls -la; echo 'end pwd';"]
