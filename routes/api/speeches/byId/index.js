@@ -10,7 +10,7 @@ async function getById(req, res) {
   try {
     const foundObj = await stateObj.Collections.Speeches.readById(req.params.SpeechId);
     
-    return res.status(200).json({ foundObj });
+    return res.status(200).json(foundObj);
   } catch (error) {
     res.status(500).json({ Good: "Lord" })
     console.log(error.message)

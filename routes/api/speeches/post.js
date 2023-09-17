@@ -1,4 +1,4 @@
-import { stateObj } from './../../../state.js';
+import { speeches } from './../../../state.js';
 
 async function postASpeech(req, res) {
   // sanity checking
@@ -10,7 +10,7 @@ async function postASpeech(req, res) {
   }
 
   try {
-    const { insertedId } = await stateObj.Collections.Speeches.createOne({ author, text, date });
+    const { insertedId } = await speeches().insertOne({ author, text, date });
     return res.set('Location', `/speeches/${insertedId}`).status(200).end();
   } catch (error) {
     return res.status(500).json({ Error: error.message });
