@@ -1,5 +1,4 @@
 import { speeches } from './../../../state.js';
-
 async function postASpeech(req, res) {
   // sanity checking
   const {
