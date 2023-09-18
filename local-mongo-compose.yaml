@@ -1,0 +1,23 @@
+version: '3'
+services:
+  nlpapi:
+    depends_on: 
+      - mongobox
+    container_name: nlpdev
+    volumes:
+      - ./state.js:/app/state.js
+      - ./lib:/app/lib
+      - ./routes:/app/routes
+      - ./setup:/app/setup
+    env_file: 
+      - nlp_local_mongo.env
+    build:
+      context: .
+      dockerfile: dev.Dockerfile
+    ports:
+      - 3000:3000
+  mongobox:
+    container_name: mongobox
+    env_file: 
+      - nlp_local_mongo.env
+    image: mongo:6
