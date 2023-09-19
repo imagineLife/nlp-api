@@ -4,7 +4,7 @@ import postASpeech from './post.js';
 import { speeches } from './../../../state.js';
 import { failOnUnwatendFields } from './middleware.js'
 async function getSpeeches(req, res) {
-  let data = await speeches().find({}).toArray()
+  let data = await speeches().find({}).project({ _id: 1, author: 1, date: 1}).toArray()
   return res.status(200).json(data);
 }
 

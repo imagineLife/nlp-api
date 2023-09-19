@@ -21,3 +21,5 @@ services:
     env_file: 
       - nlp_local_mongo.env
     image: mongo:6
+    ports:
+      - 27017:27017

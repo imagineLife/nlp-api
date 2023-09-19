@@ -1,12 +1,5 @@
 import { speeches } from './../../../state.js';
-
-const analyticsToRun = ['wordCount'];
-function runAnalytics(speechId) {
-  let runThese = [...analyticsToRun];
-  console.log('run analytics on...')
-  
-}
-
+import { runAnalytics } from './../../../lib/index.js'
 async function postASpeech(req, res) {
   // sanity checking
   const {
@@ -17,10 +10,14 @@ async function postASpeech(req, res) {
   }
 
   try {
-    const { insertedId } = await speeches().insertOne({ author, text, date, analytics: {} });
+    const { insertedId } = await speeches().insertOne({ author, text, date: new Date(date), analytics: {}, creationDate: new Date() });
     res.set('Location', `/speeches/${insertedId}`).status(200).end();
     runAnalytics(insertedId);
+    return;
   } catch (error) {
+    console.log('postASpeech error');
+    console.log(error)
+    
     return res.status(500).json({ Error: error.message });
   }
 }
