@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import { getById } from './get.js'
+import { getById } from './get.js';
 const speechByIdRouter = Router({ mergeParams: true });
 
 function putById(req, res) {
