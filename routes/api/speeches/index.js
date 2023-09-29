@@ -9,6 +9,10 @@ async function getSpeeches(req, res) {
 }
 
 const speechesRouter = Router();
-speechesRouter.get('/', failOnUnwatendFields, getSpeeches).post('/', failOnUnwatendFields, postASpeech);
+
 speechesRouter.use('/:SpeechId', failOnUnwatendFields, byIdRouter);
+
+speechesRouter
+  .get('/', failOnUnwatendFields, getSpeeches)
+  .post('/', failOnUnwatendFields, postASpeech);
 export default speechesRouter;
