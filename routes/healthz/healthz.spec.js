@@ -1,5 +1,5 @@
 import supertest from 'supertest';
-import { expressSetup, serverKiller } from './../../setup/index.js';
+import { expressSetup } from './../../setup/index.js';
 const LIVENESS_URL = '/healthz/liveness'
 const READINESS_URL = '/healthz/readiness';
 describe('GET /healthz', () => {
