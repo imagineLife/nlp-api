@@ -23,7 +23,7 @@ export default function setupExpress() {
 
   /*
     START the server
-  */ 
+  */
   let app = expressObj.listen(PORT_TO_USE, () => {
     console.log(`API: server up & running on port ${PORT_TO_USE}!`);
   });
