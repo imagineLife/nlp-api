@@ -1,0 +1,62 @@
+name: 'API pipeline'
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+jobs:
+  api-coverage:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v1
+      - name: Use NodeJS
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18
+      - name: Start MongoDB
+        uses: supercharge/mongodb-github-action@1.7.0
+        with:
+          mongodb-version: '4.2'
+
+      # cache BEFORE npm i to leverage cache
+      # DOCS:
+      #   https://github.com/actions/cache
+      # TODO: update to v2
+      - name: cache node-mods
+        uses: actions/cache@v3
+        with:
+          # OS-dependent + package-manager dependent path val
+          # NPM Cache docs:
+          #   https://docs.npmjs.com/cli/v7/configuring-npm/folders#cache
+          path: ~/.npm
+          # key docs: https://github.com/actions/cache#creating-a-cache-key
+          #   os type
+          #   hashing package-lock file for changes
+          key: ${{runner.os}}-server-node-mods-key-${{ hashFiles('**/package-lock.json') }}
+          # restore-keys docs: https://github.com/actions/cache#inputs
+          # same value as previous key
+          # first time it runs the cache, github wont find anything for the cache
+          # prefix-only - the hash will be different each cache
+          # must be regex matching or something
+          restore-keys: |
+            ${{runner.os}}-server-node-mods-key-
+          # ONCE workflow is done, github caches the hashed package-lock with the key :)
+          #   a post cache step gets added to the workflow by this action lib
+
+      #  install deps
+      - run: npm ci
+
+      - name: API Unit Tests
+        run: npm run test:coverage
+      # - uses: ArtiomTr/jest-coverage-report-action@v2
+      #     annotations: none
+
+      - name: Upload CodeCov Report
+        if: github.event_name == 'push' && github.ref == 'refs/heads/master'
+        run: npx codecov
+
+      - name: Create Release
+        if: github.event_name == 'push' && github.ref == 'refs/heads/master'
+        run: npx semantic-release
+        env:
+          GITHUB_TOKEN: ${{ secrets.PUBLISH_KEY }}
