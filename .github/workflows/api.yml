@@ -52,11 +52,11 @@ jobs:
       #     annotations: none
 
       - name: Upload CodeCov Report
-        if: github.event_name == 'push' && github.ref == 'refs/heads/master'
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
         run: npx codecov
 
-      - name: Create Release
-        if: github.event_name == 'push' && github.ref == 'refs/heads/master'
-        run: npx semantic-release
-        env:
-          GITHUB_TOKEN: ${{ secrets.PUBLISH_KEY }}
+      # - name: Create Release
+      #   if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+      #   run: npx semantic-release
+      #   env:
+      #     GITHUB_TOKEN: ${{ secrets.PUBLISH_KEY }}
