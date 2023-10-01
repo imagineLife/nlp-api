@@ -35,6 +35,17 @@
   "jest": {
     "setupFilesAfterEnv": [
       "<rootDir>/lib/config/test-env.js"
+    ],
+    "coverageThreshold": {
+      "global": {
+        "statements": 54.74,
+        "branches": 53.48,
+        "functions": 56.73,
+        "lines": 54.43
+      }
+    },
+    "coveragePathIgnorePatterns": [
+      "<rootDir>/lib/index.js"
     ]
   }
 }

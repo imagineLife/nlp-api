@@ -23,4 +23,10 @@ describe('GET /healthz', () => {
     expect(status).toBe('OK');
     expect(typeof timestamp).toBe('string')
   });
+
+  it(`GET /healthz returns "healthy"`, async () => { 
+    const { statusCode, text } = await supertest(app).get(`/healthz`);
+    expect(statusCode).toBe(200);
+    expect(text).toBe('healthy');
+  })
 })
