@@ -12,7 +12,8 @@ describe('GET /healthz', () => {
     app.close();
   })
   it(LIVENESS_URL, async () => {
-    const response = await supertest(app).get(LIVENESS_URL);
-    expect(response.statusCode).toBe(200);
+    const { statusCode, text } = await supertest(app).get(LIVENESS_URL);
+    expect(statusCode).toBe(200);
+    expect(text).toBe('OK');
   });
 })
