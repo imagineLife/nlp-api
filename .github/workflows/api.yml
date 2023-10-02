@@ -32,14 +32,14 @@ jobs:
           # key docs: https://github.com/actions/cache#creating-a-cache-key
           #   os type
           #   hashing package-lock file for changes
-          key: ${{runner.os}}-server-node-mods-key-${{ hashFiles('**/package-lock.json') }}
+          key: ${{runner.os}}-nlpapi-nodemods-key-${{ hashFiles('**/package-lock.json') }}
           # restore-keys docs: https://github.com/actions/cache#inputs
           # same value as previous key
           # first time it runs the cache, github wont find anything for the cache
           # prefix-only - the hash will be different each cache
           # must be regex matching or something
           restore-keys: |
-            ${{runner.os}}-server-node-mods-key-
+            ${{runner.os}}-nlpapi-nodemods-key-
           # ONCE workflow is done, github caches the hashed package-lock with the key :)
           #   a post cache step gets added to the workflow by this action lib
 
