@@ -1,5 +1,8 @@
 import { stateObj } from './../../state.js';
 
+export const MISSING_DATA_ERR = 'missing required data to allow access';
+export const NO_APP_REGISTERED_ERR = 'No App Registration stored for this instance, try starting over!';
+export const APP_REG_EXP_ERR = 'App Registration Expired, try starting over!';
 export default function allowAccessHandler(req, res) {
   /*
     Error Handling
@@ -9,20 +12,20 @@ export default function allowAccessHandler(req, res) {
       - date SHOULD NOT be before now
   */
   if (!req?.query?.id) {
-    return res.status(422).json({ Error: "missing required data to allow access" });
+    return res.status(422).json({ Error: MISSING_DATA_ERR });
   }
   const { id: appId } = req.query;
 
   if (!stateObj[`${appId}`]) {
     return res
       .status(422)
-      .json({ Error: 'No App Registration stored for this instance, try starting over!' });
+      .json({ Error: NO_APP_REGISTERED_ERR });
   }
 
   const savedAppDate = stateObj[`${appId}`];
   if (savedAppDate <= new Date()) {
     delete stateObj[`${appId}`];
-    return res.status(422).json({ Error: 'App Registration Expired, try starting over!' });
+    return res.status(422).json({ Error: APP_REG_EXP_ERR });
   }
 
   delete stateObj[`${appId}`];
