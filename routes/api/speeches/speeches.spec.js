@@ -11,10 +11,10 @@ describe('speeches', () => {
     dbClient = MongoClient;
     registerDbCollections(dbClient);
   });
-  afterAll(() => {
+  afterAll(async () => {
     console.log('closing app');
-    app.close();
-    dbClient.close()
+    await app.close();
+    await dbClient.close();
   });
 
   it('GET', async () => {
