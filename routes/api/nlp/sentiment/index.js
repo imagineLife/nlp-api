@@ -1,7 +1,7 @@
 import express from 'express';
 import postHandler from './post.js';
 import excelRouter from './excel/index.js';
-import expectTextInBody from './expectTextInBody.js';
+import expectTextInBody from '../../../../middleware/expectTextInBody.js';
 
 const sentimentRouter = express.Router();
 
