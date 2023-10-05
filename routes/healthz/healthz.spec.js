@@ -7,10 +7,9 @@ describe('GET /healthz', () => {
   beforeAll(() => { 
     app = expressSetup();
   })
-  afterAll(() => { 
+  afterAll(async () => { 
     console.log('closing app')
-    
-    app.close();
+    await app.close();
   })
   it(`${LIVENESS_URL} returns a 200 with text "OK"`, async () => {
     const { statusCode, text } = await supertest(app).get(LIVENESS_URL);
