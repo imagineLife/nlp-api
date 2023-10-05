@@ -46,6 +46,7 @@
     },
     "coveragePathIgnorePatterns": [
       "<rootDir>/lib/index.js"
-    ]
+    ],
+    "globalTeardown": "<rootDir>/lib/config/jest-global-teardown.js"
   }
 }
