@@ -69,9 +69,6 @@ describe('allowAccessHandler', () => {
     let forwardDate = new Date();
     const pastDate = expDate.getDate() - 7;
     const futureDate = forwardDate.getDate() + 100;
-    console.log('futureDate')
-    console.log(futureDate)
-    
     expDate.setDate(pastDate);
     forwardDate.setDate(futureDate)
     stateObj[`${EXPIRED_APP_ID}`] = expDate;
