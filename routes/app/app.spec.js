@@ -169,7 +169,7 @@ describe('get', () => {
     getHandler(mockReq, mockRes);
     const {
       mock: {
-        calls: [[mockFnArg]],
+        calls: [[mockJsonRes]],
       },
     } = mockJsonFn;
     expect(Object.keys(mockJsonRes)[0]).toBe('id');
