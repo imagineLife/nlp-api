@@ -2,7 +2,7 @@ import { jest } from '@jest/globals';
 import assureAllowed from './assureAllowed.js';
 import allowAccessHandler, { MISSING_DATA_ERR, NO_APP_REGISTERED_ERR, APP_REG_EXP_ERR } from "./allowAccess.js";
 import { stateObj } from '../../state.js';
-
+import getHandler from './get.js'
 describe('assureAllowed', () => {
   const throws = [
     {
@@ -139,3 +139,36 @@ describe('allowAccessHandler', () => {
     expect(mockTwo).toHaveBeenCalledWith({ appId: NON_EXPIRED_APP_ID });
   });
 });
+
+describe('get', () => { 
+  const HOST_PROCESS_ENV = process.env;
+
+  beforeEach(() => {
+    jest.resetModules(); // Most important - it clears the cache
+    process.env = { ...HOST_PROCESS_ENV }; // Make a copy
+  });
+
+  afterAll(() => {
+    process.env = HOST_PROCESS_ENV; // Restore old environment
+  });
+
+  it('gets an appId & validates the app is in stateObj', () => {
+    process.env.ALLOWED_HOST = 'test-host';
+    process.env.ALLOWED_QUERY = 'testquery';
+    const mockJsonFn = jest.fn()
+    const mockReq = {
+      hostname: 'test-host',
+      query: { id: 'testquery' },
+    };
+    const mockRes = {
+      status: () => ({
+        json: mockJsonFn
+      }),
+    };
+
+    getHandler(mockReq, mockRes);
+    const { mock: { calls: [ [mockFnArg] ] } } = mockJsonFn;
+    expect(Object.keys(mockFnArg)[0]).toBe('id');
+    expect(typeof mockFnArg.id).toBe('string');
+  })
+})

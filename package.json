@@ -38,15 +38,16 @@
     ],
     "coverageThreshold": {
       "global": {
-        "statements": 62,
+        "statements": 64.2,
         "branches": 63.56,
-        "functions": 65.71,
-        "lines": 61.58
+        "functions": 68.57,
+        "lines": 63.88
       }
     },
     "coveragePathIgnorePatterns": [
       "<rootDir>/lib/index.js"
     ],
+    "globalSetup": "<rootDir>/lib/config/jest-global-setup.js",
     "globalTeardown": "<rootDir>/lib/config/jest-global-teardown.js"
   }
 }
