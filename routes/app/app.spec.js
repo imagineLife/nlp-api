@@ -155,20 +155,26 @@ describe('get', () => {
   it('gets an appId & validates the app is in stateObj', () => {
     process.env.ALLOWED_HOST = 'test-host';
     process.env.ALLOWED_QUERY = 'testquery';
-    const mockJsonFn = jest.fn()
+    const mockJsonFn = jest.fn();
     const mockReq = {
       hostname: 'test-host',
       query: { id: 'testquery' },
     };
     const mockRes = {
       status: () => ({
-        json: mockJsonFn
+        json: mockJsonFn,
       }),
     };
 
     getHandler(mockReq, mockRes);
-    const { mock: { calls: [ [mockFnArg] ] } } = mockJsonFn;
+    const {
+      mock: {
+        calls: [[mockFnArg]],
+      },
+    } = mockJsonFn;
     expect(Object.keys(mockFnArg)[0]).toBe('id');
     expect(typeof mockFnArg.id).toBe('string');
+    expect(typeof stateObj[`${mockFnArg.id}`]).toBe('object');
+    delete stateObj[`${mockFnArg.id}`];
   })
 })
