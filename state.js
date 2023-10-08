@@ -15,7 +15,7 @@ let stateObj = {
 }
 
 function speeches() { 
-  return stateObj.Collections?.Speeches.collection
+  return stateObj.Collections?.Speeches?.collection
 }
 
 export { stateObj, speeches };

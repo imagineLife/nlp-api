@@ -43,8 +43,9 @@ async function setupTestDB(params) {
   }
 }
 
-function registerDbCollections(DbObj) {
-  const NlpDb = DbObj.registerDB('Nlp');
+function registerDbCollections(DbObj, testRegistration) {
+  let dbName = testRegistration ? 'TestNlp' : 'Nlp'
+  const NlpDb = DbObj.registerDB(dbName);
   const SpeechesCollection = new Crud({
     db: NlpDb,
     collection: 'Speeches',
@@ -56,8 +57,7 @@ function registerDbCollections(DbObj) {
     collection: 'Themes',
   });
   stateObj.Collections.Themes = ThemesCollection;
-  console.log('DB: Collections setup')
-  
+  console.log(`DB: Collections setup in db ${dbName}`);
 }
 
 export default setupDB;
