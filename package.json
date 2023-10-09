@@ -33,21 +33,21 @@
     "nodemon": "^2.0.20"
   },
   "jest": {
-    "setupFilesAfterEnv": [
-      "<rootDir>/lib/config/test-env.js"
-    ],
     "coverageThreshold": {
       "global": {
-        "statements": 72.81,
-        "branches": 70.99,
-        "functions": 72.38,
-        "lines": 72.87
+        "statements": 75,
+        "branches": 74.04,
+        "functions": 73.58,
+        "lines": 75.15
       }
     },
     "coveragePathIgnorePatterns": [
       "<rootDir>/lib/index.js"
     ],
     "globalSetup": "<rootDir>/lib/config/jest-global-setup.js",
-    "globalTeardown": "<rootDir>/lib/config/jest-global-teardown.js"
+    "globalTeardown": "<rootDir>/lib/config/jest-global-teardown.js",
+    "setupFilesAfterEnv": [
+      "<rootDir>/lib/config/test-env.js"
+    ]
   }
 }
