@@ -38,7 +38,7 @@
         "statements": 75,
         "branches": 74.04,
         "functions": 73.58,
-        "lines": 75.15
+        "lines": 75.25
       }
     },
     "coveragePathIgnorePatterns": [

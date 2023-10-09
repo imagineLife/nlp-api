@@ -1,4 +1,3 @@
-import { runAnalytics } from './../../../lib/index.js'
 async function postASpeech(req, res) {
   // sanity checking
   const {
@@ -14,7 +13,8 @@ async function postASpeech(req, res) {
         .speeches()
         .insertOne({ author, text, date: new Date(date), analytics: {}, creationDate: new Date() });
     res.set('Location', `/speeches/${insertedId}`).status(200).end();
-    // runAnalytics(insertedId);
+      const analyticsMod = await import('./../../../lib/index.js');
+      analyticsMod.runAnalytics(insertedId);
     return;
     })
   } catch (error) {

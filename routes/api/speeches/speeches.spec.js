@@ -60,12 +60,22 @@ describe('speeches', () => {
     expect(body.Error).toBe('mock thrown')
   });
 
-    it('POST success: returns a 200 with location header', async () => {
-      jest.unstable_mockModule('./../../../state.js', () => ({
+  it('POST success: returns a 200 with location header, calls "runAnalytics fn"', async () => {
+      const mockRunAnaytics = jest.fn()
+      // mock modules
+      // STATE
+      jest.unstable_mockModule('./../../../state.js', async () => ({
         speeches: () => ({
           insertOne: mockSpeechesFn.mockImplementation(() => ({ insertedId: mockPostSpeechId })),
         }),
+        stateObj: {},
       }));
+      // ANALYTICS
+      jest.unstable_mockModule('./../../../lib/index.js', async () => ({
+        runAnalytics: mockRunAnaytics,
+      }));
+
+
       const stateModule = await import('./../../../state.js');
       const { statusCode, headers } = await supertest(app).post(SPEECHES_URL).send({
         text: 'this is a test',
@@ -74,7 +84,9 @@ describe('speeches', () => {
       });
       expect(statusCode).toBe(200);
       expect(headers.location.includes(`/speeches/${mockPostSpeechId}`)).toBe(true);
-      expect(mockSpeechesFn).toHaveBeenCalled();
+    expect(mockSpeechesFn).toHaveBeenCalled();
+    expect(mockRunAnaytics).toHaveBeenCalledTimes(1);
+    expect(mockRunAnaytics).toHaveBeenCalledWith(mockPostSpeechId);
     });
 });
 
