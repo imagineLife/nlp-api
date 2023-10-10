@@ -26,16 +26,17 @@ describe('speeches', () => {
   afterAll(async () => {
     console.log('closing app');
     await app.close();
+    await dbClient.dropDatabase();
     await dbClient.close();
   });
 
   it('GET returns a 200', async () => {
-    const { statusCode, body } = await supertest(app).get(SPEECHES_URL);
+    const { statusCode } = await supertest(app).get(SPEECHES_URL);
     expect(statusCode).toBe(200);
   });
   
   it('POST fail: returns a 422 with expected body.Error text', async () => {
-    const stateModule = await import('./../../../state.js');
+    // const stateModule = await import('./../../../state.js');
     const { statusCode, body } = await supertest(app).post(SPEECHES_URL).send({
       text: 'this is a test',
       author: 'test author',
@@ -50,7 +51,7 @@ describe('speeches', () => {
         insertOne: mockSpeechesFn.mockRejectedValueOnce({ message: 'mock thrown' }),
       }),
     }));
-    const stateModule = await import('./../../../state.js');
+    // const stateModule = await import('./../../../state.js');
     const { statusCode, body, ...rest } = await supertest(app).post(SPEECHES_URL).send({
       text: 'this is a test',
       author: 'test author',
@@ -76,7 +77,7 @@ describe('speeches', () => {
       }));
 
 
-      const stateModule = await import('./../../../state.js');
+      // const stateModule = await import('./../../../state.js');
       const { statusCode, headers } = await supertest(app).post(SPEECHES_URL).send({
         text: 'this is a test',
         author: 'test author',
