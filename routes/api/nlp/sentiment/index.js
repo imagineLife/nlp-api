@@ -1,5 +1,5 @@
 import express from 'express';
-import postHandler from './post.js';
+import postHandler from './post/index.js';
 import excelRouter from './excel/index.js';
 import expectTextInBody from '../../../../middleware/expectTextInBody.js';
 

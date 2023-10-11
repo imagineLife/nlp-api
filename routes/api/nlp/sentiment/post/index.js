@@ -1,15 +1,15 @@
-import {
-  buildArrOfSentences,
-  buildArrOfWords,
-  convertStringToArr,
-  getLongestThirty,
-  getLongestWord,
-  getSentenceThemes,
-  getWordsByCount,
-  setupNLPTools,
-} from './../../../../lib/index.js';
+async function getTextStats(text) {
+  const {
+    buildArrOfSentences,
+    buildArrOfWords,
+    convertStringToArr,
+    getLongestThirty,
+    getLongestWord,
+    getSentenceThemes,
+    getWordsByCount,
+    setupNLPTools,
+  } = await import('../../../../../lib/index.js');
 
-function getTextStats(text) {
    const entireArray = convertStringToArr(text);
    const wordsByCount = getWordsByCount(entireArray);
    const longestThirty = getLongestThirty(entireArray);
@@ -102,10 +102,7 @@ function getTextStats(text) {
      .sort((a, b) => b.sentences - a.sentences);
   return { summary: internalSummary, sentenceArr }
 }
-export default function postHandler(req, res) {
-  console.log('HERE?')
-  
-  let { summary, sentenceArr } = getTextStats(req.body.text);
-
+export default async function postHandler(req, res) {  
+  let { summary, sentenceArr } = await getTextStats(req.body.text);
   return res.json({ summary, sentenceAnalysis: sentenceArr });
 }
