@@ -104,5 +104,5 @@ async function getTextStats(text) {
 }
 export default async function postHandler(req, res) {  
   let { summary, sentenceArr } = await getTextStats(req.body.text);
-  return res.json({ summary, sentenceAnalysis: sentenceArr });
+  return res.status(200).json({ summary, sentenceAnalysis: sentenceArr });
 }

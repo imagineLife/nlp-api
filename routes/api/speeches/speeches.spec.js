@@ -51,7 +51,6 @@ describe('speeches', () => {
         insertOne: mockSpeechesFn.mockRejectedValueOnce({ message: 'mock thrown' }),
       }),
     }));
-    // const stateModule = await import('./../../../state.js');
     const { statusCode, body, ...rest } = await supertest(app).post(SPEECHES_URL).send({
       text: 'this is a test',
       author: 'test author',
