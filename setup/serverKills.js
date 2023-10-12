@@ -1,5 +1,4 @@
 function serverKiller(expressObj, dbClient) {
-  console.log('serverKiller!')
   function killEmAll(signal) {
     console.log(`registering signal handling for ${signal}`);
 
