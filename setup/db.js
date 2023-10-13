@@ -2,10 +2,7 @@ import { DB } from './../lib/models/db/index.js';
 import { Crud } from './../lib/models/crud/index.js'
 import { stateObj } from './../state.js';
 /*
-  - takes a db name (string)
-    - builds Mongo Client
-    - connects mongo client
-  - returns the db object
+  - takes {host: string, port: number}
 */
 async function setupDB(params) {
   try {
