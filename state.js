@@ -6,16 +6,15 @@ speechesFields.set('date', true);
 
 let stateObj = {
   themeMaps: {},
-  Collections: {
-    Speeches: null
-  },
+  Collections: {},
   fields: {
     speechFields: speechesFields
   }
 }
 
 function get(collectionName) { 
-  return stateObj.Collections?.[`${collectionName}`]?.collection;
+  if (collectionName !== 'Users') return stateObj.Collections?.[`${collectionName}`]?.collection;
+  return stateObj.Collections.Users;
 }
 
 export { stateObj, get };
