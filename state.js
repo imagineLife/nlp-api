@@ -14,8 +14,8 @@ let stateObj = {
   }
 }
 
-function speeches() { 
-  return stateObj.Collections?.Speeches?.collection
+function get(collectionName) { 
+  return stateObj.Collections?.[`${collectionName}`]?.collection;
 }
 
-export { stateObj, speeches };
+export { stateObj, get };

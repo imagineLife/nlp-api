@@ -10,7 +10,7 @@ async function postASpeech(req, res) {
   try {
     await import('./../../../state.js').then(async stateMod => {
       const { insertedId } = await stateMod
-        .speeches()
+        .get('Speeches')
         .insertOne({ author, text, date: new Date(date), analytics: {}, creationDate: new Date() });
     res.set('Location', `/speeches/${insertedId}`).status(200).end();
       const analyticsMod = await import('./../../../lib/index.js');

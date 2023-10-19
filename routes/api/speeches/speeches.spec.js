@@ -47,7 +47,7 @@ describe('speeches', () => {
 
   it('POST fail: returns a 500 when module throws', async () => {
     jest.unstable_mockModule('./../../../state.js', () => ({
-      speeches: () => ({
+      get: () => ({
         insertOne: mockSpeechesFn.mockRejectedValueOnce({ message: 'mock thrown' }),
       }),
     }));
@@ -65,7 +65,7 @@ describe('speeches', () => {
       // mock modules
       // STATE
       jest.unstable_mockModule('./../../../state.js', async () => ({
-        speeches: () => ({
+        get: () => ({
           insertOne: mockSpeechesFn.mockImplementation(() => ({ insertedId: mockPostSpeechId })),
         }),
         stateObj: {},
