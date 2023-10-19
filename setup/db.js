@@ -1,5 +1,6 @@
 import { DB } from './../lib/models/db/index.js';
 import { Crud } from './../lib/models/crud/index.js'
+import { UserAuth } from './../lib/models/userAuth/index.js';
 import { stateObj } from './../state.js';
 /*
   - takes {host: string, port: number}
@@ -43,7 +44,12 @@ async function setupTestDB(params) {
 function registerDbCollections(DbObj, testRegistration) {
   let dbName = testRegistration ? 'TestNlp' : 'Nlp'
   const NlpDb = DbObj.registerDB(dbName);
-  const collections = ['Speeches', 'Themes', 'Users'];
+  const collections = ['Speeches', 'Themes'];
+
+  stateObj.Collections.Users = new UserAuth({
+    db: NlpDb,
+    collection: 'Users',
+  });
 
   collections.forEach(collection => {
     const ThisCollection = new Crud({
