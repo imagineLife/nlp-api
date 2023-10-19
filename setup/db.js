@@ -43,17 +43,15 @@ async function setupTestDB(params) {
 function registerDbCollections(DbObj, testRegistration) {
   let dbName = testRegistration ? 'TestNlp' : 'Nlp'
   const NlpDb = DbObj.registerDB(dbName);
-  const SpeechesCollection = new Crud({
-    db: NlpDb,
-    collection: 'Speeches',
-  });
-  stateObj.Collections.Speeches = SpeechesCollection;
+  const collections = ['Speeches', 'Themes', 'Users'];
 
-  const ThemesCollection = new Crud({
-    db: NlpDb,
-    collection: 'Themes',
-  });
-  stateObj.Collections.Themes = ThemesCollection;
+  collections.forEach(collection => {
+    const ThisCollection = new Crud({
+      db: NlpDb,
+      collection,
+    });
+    stateObj.Collections[`${collection}`] = ThisCollection;
+  })
   console.log(`DB: Collections setup in db ${dbName}`);
 }
 
