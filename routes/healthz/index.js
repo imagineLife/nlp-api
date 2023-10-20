@@ -1,20 +1,20 @@
-import express from 'express';
-import getHandler from './get.js';
-import getLiveness from './liveness.js';
-import getReadiness from './readiness.js';
+import express from "express";
+import getHandler from "./get.js";
+import getLiveness from "./liveness.js";
+import getReadiness from "./readiness.js";
 const openApiRouter = express.Router();
 
 const healthzRoutes = [
   {
-    path: '/',
+    path: "/",
     handler: getHandler,
   },
   {
-    path: '/liveness',
+    path: "/liveness",
     handler: getLiveness,
   },
   {
-    path: '/readiness',
+    path: "/readiness",
     handler: getReadiness,
   },
 ];

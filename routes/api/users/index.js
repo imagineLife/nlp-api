@@ -1,13 +1,13 @@
-import { Router } from 'express';
+import { Router } from "express";
 // import byIdRouter from './byId/index.js';
-import postAUser from './post.js';
-import { get } from './../../../state.js';
+import postAUser from "./post.js";
+import { get } from "./../../../state.js";
 async function getUsers(req, res) {
   try {
-    let data = await get('Users').readMany();
+    let data = await get("Users").readMany();
     return res.status(200).json(data);
   } catch (error) {
-    res.status(500).send('API ERROR')
+    res.status(500).send("API ERROR");
   }
 }
 
@@ -19,13 +19,13 @@ function requireUserFields({ body }, res, next) {
   // sanity checking
   const { email, firstName, lastName } = body;
   if (!email || !firstName || !lastName) {
-    return res.status(422).json({ Error: 'missing required params' });
+    return res.status(422).json({ Error: "missing required params" });
   }
-  next()
+  next();
 }
 
 usersRouter
   // failOnUnwatendFields on both routes
-  .get('/', getUsers)
-  .post('/', requireUserFields, postAUser);
+  .get("/", getUsers)
+  .post("/", requireUserFields, postAUser);
 export default usersRouter;

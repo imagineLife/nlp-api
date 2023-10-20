@@ -12,15 +12,14 @@
 
 */
 
-import express from 'express';
+import express from "express";
 const appRouter = express.Router();
 
-
 // handlers
-import getHandler from './get.js';
-import allowAccessHandler from './allowAccess.js';
+import getHandler from "./get.js";
+import allowAccessHandler from "./allowAccess.js";
 
-appRouter.get('/init', getHandler)
-appRouter.get('/allow-access', allowAccessHandler);
+appRouter.get("/init", getHandler);
+appRouter.get("/allow-access", allowAccessHandler);
 
 export default appRouter;

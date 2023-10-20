@@ -1,7 +1,7 @@
-import { DB } from './../lib/models/db/index.js';
-import { Crud } from './../lib/models/crud/index.js'
-import { UserAuth } from './../lib/models/userAuth/index.js';
-import { stateObj } from './../state.js';
+import { DB } from "./../lib/models/db/index.js";
+import { Crud } from "./../lib/models/crud/index.js";
+import { UserAuth } from "./../lib/models/userAuth/index.js";
+import { stateObj } from "./../state.js";
 /*
   - takes {host: string, port: number}
 */
@@ -20,7 +20,7 @@ async function setupDB(params) {
     await MongoClient.connect();
     return MongoClient;
   } catch (e) {
-    console.log('setupDB Error: ', e.message);
+    console.log("setupDB Error: ", e.message);
     return null;
   }
 }
@@ -42,22 +42,22 @@ async function setupTestDB(params) {
 }
 
 function registerDbCollections(DbObj, testRegistration) {
-  let dbName = testRegistration ? 'TestNlp' : 'Nlp'
+  let dbName = testRegistration ? "TestNlp" : "Nlp";
   const NlpDb = DbObj.registerDB(dbName);
-  const collections = ['Speeches', 'Themes'];
+  const collections = ["Speeches", "Themes"];
 
   stateObj.Collections.Users = new UserAuth({
     db: NlpDb,
-    collection: 'Users',
+    collection: "Users",
   });
 
-  collections.forEach(collection => {
+  collections.forEach((collection) => {
     const ThisCollection = new Crud({
       db: NlpDb,
       collection,
     });
     stateObj.Collections[`${collection}`] = ThisCollection;
-  })
+  });
   console.log(`DB: Collections setup in db ${dbName}`);
 }
 

@@ -1,6 +1,6 @@
-import { randomUUID } from 'crypto';
-import assureAllowed from './assureAllowed.js';
-import { stateObj } from './../../state.js';
+import { randomUUID } from "crypto";
+import assureAllowed from "./assureAllowed.js";
+import { stateObj } from "./../../state.js";
 
 const APP_EXP_MINUTES = 2;
 

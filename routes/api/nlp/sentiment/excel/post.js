@@ -4,8 +4,8 @@ import {
   getWordsByCount,
   mergeWordsByCount,
   getSentenceThemes,
-} from './../../../../../lib/index.js';
-import { mean, median, max, min } from 'd3-array';
+} from "./../../../../../lib/index.js";
+import { mean, median, max, min } from "d3-array";
 
 // function mergeAndAddObjVals(startingArr, newObj) {
 // }
@@ -23,7 +23,7 @@ export default function excelPost(req, res) {
       answers: [],
       sentimentScores: [],
       wordsByCount: [],
-      themes: []
+      themes: [],
     };
   });
 
@@ -33,7 +33,9 @@ export default function excelPost(req, res) {
       const thisAnswer = answerRow[answer];
       const sentenceThemes = getSentenceThemes(thisAnswer);
       const thisSentenceWordTokens = buildArrOfWords(thisAnswer);
-      const sentScore = Number(affinityAnalyzer.getSentiment(thisSentenceWordTokens).toFixed(1));
+      const sentScore = Number(
+        affinityAnalyzer.getSentiment(thisSentenceWordTokens).toFixed(1),
+      );
       const answerWordsByCount = getWordsByCount(thisSentenceWordTokens);
 
       const answerObj = {
@@ -41,7 +43,7 @@ export default function excelPost(req, res) {
         sentimentScore: sentScore || 0,
         themes: sentenceThemes,
       };
-      
+
       resArr[qIdx].answers.push(answerObj);
 
       /*
@@ -49,7 +51,10 @@ export default function excelPost(req, res) {
       */
       resArr[qIdx].themes = resArr[qIdx].themes.concat(sentenceThemes);
       resArr[qIdx].sentimentScores.push(sentScore);
-      const updatedWordsByCount = mergeWordsByCount(resArr[qIdx].wordsByCount, answerWordsByCount);
+      const updatedWordsByCount = mergeWordsByCount(
+        resArr[qIdx].wordsByCount,
+        answerWordsByCount,
+      );
       resArr[qIdx].wordsByCount = updatedWordsByCount;
     });
   });
@@ -83,23 +88,35 @@ export default function excelPost(req, res) {
         percent: 0,
       },
     };
-    
+
     q.sentimentScores.forEach((ss) => {
-      if (ss < 0) sentimentCounts.negative.count = sentimentCounts.negative.count + 1;
-      if (ss > 0) sentimentCounts.positive.count = sentimentCounts.positive.count + 1;
-      if (ss == 0) sentimentCounts.neutral.count = sentimentCounts.neutral.count + 1;
+      if (ss < 0)
+        sentimentCounts.negative.count = sentimentCounts.negative.count + 1;
+      if (ss > 0)
+        sentimentCounts.positive.count = sentimentCounts.positive.count + 1;
+      if (ss == 0)
+        sentimentCounts.neutral.count = sentimentCounts.neutral.count + 1;
     });
 
-    sentimentCounts.positive.percent = Math.round((sentimentCounts.positive.count / q.sentimentScores.length) * 100, 0);
-    sentimentCounts.negative.percent = Math.round((sentimentCounts.negative.count / q.sentimentScores.length) * 100, 0);
-    sentimentCounts.neutral.percent = Math.round((sentimentCounts.neutral.count / q.sentimentScores.length) * 100, 0);
+    sentimentCounts.positive.percent = Math.round(
+      (sentimentCounts.positive.count / q.sentimentScores.length) * 100,
+      0,
+    );
+    sentimentCounts.negative.percent = Math.round(
+      (sentimentCounts.negative.count / q.sentimentScores.length) * 100,
+      0,
+    );
+    sentimentCounts.neutral.percent = Math.round(
+      (sentimentCounts.neutral.count / q.sentimentScores.length) * 100,
+      0,
+    );
 
     q.sentimentCounts = sentimentCounts;
-    
+
     delete q.sentimentScores;
     q.themes = q.themes.reduce(
       (uniq, theme) => (uniq.includes(theme) ? uniq : [...uniq, theme]),
-      []
+      [],
     );
   });
 

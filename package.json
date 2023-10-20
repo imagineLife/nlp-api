@@ -4,6 +4,10 @@
   "description": "An API that serve NLP Content....",
   "main": "index.js",
   "scripts": {
+    "format:check": "prettier --check .",
+    "format:write": "prettier --write .",
+    "lint:check": "eslint .",
+    "lint:fix": "eslint --fix .",
     "local": "nodemon .",
     "local-node": "ALLOWED_HOST=localhost ALLOWED_QUERY=local-gats node .",
     "start": "ALLOWED_HOST=$ALLOWED_HOST ALLOWED_QUERY=$ALLOWED_QUERY node .",
@@ -30,7 +34,10 @@
     "supertest": "^6.3.3"
   },
   "devDependencies": {
-    "nodemon": "^2.0.20"
+    "eslint": "^8.51.0",
+    "eslint-config-prettier": "^9.0.0",
+    "nodemon": "^2.0.20",
+    "prettier": "^3.0.3"
   },
   "jest": {
     "coverageThreshold": {

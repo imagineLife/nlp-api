@@ -1,4 +1,4 @@
-name: 'API pipeline'
+name: "API pipeline"
 on:
   workflow_dispatch:
   push:
@@ -16,7 +16,7 @@ jobs:
       - name: Start MongoDB
         uses: supercharge/mongodb-github-action@1.7.0
         with:
-          mongodb-version: '4.2'
+          mongodb-version: "4.2"
 
       # cache BEFORE npm i to leverage cache
       # DOCS:

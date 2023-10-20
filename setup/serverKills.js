@@ -6,11 +6,11 @@ function serverKiller(expressObj, dbClient) {
       console.log(`${signal} received: closing HTTP server`);
       if (dbClient) await dbClient.close();
       expressObj.close(() => {
-        console.log('express server closed');
+        console.log("express server closed");
       });
     });
   }
-  ['SIGINT', 'SIGTERM', 'SIGQUIT'].forEach(killEmAll);
+  ["SIGINT", "SIGTERM", "SIGQUIT"].forEach(killEmAll);
 }
 
-export { serverKiller }
+export { serverKiller };

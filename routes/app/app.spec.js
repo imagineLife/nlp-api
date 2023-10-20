@@ -1,23 +1,27 @@
-import { jest } from '@jest/globals';
-import assureAllowed from './assureAllowed.js';
-import allowAccessHandler, { MISSING_DATA_ERR, NO_APP_REGISTERED_ERR, APP_REG_EXP_ERR } from "./allowAccess.js";
-import { stateObj } from '../../state.js';
-import getHandler from './get.js'
-describe('assureAllowed', () => {
+import { jest } from "@jest/globals";
+import assureAllowed from "./assureAllowed.js";
+import allowAccessHandler, {
+  MISSING_DATA_ERR,
+  NO_APP_REGISTERED_ERR,
+  APP_REG_EXP_ERR,
+} from "./allowAccess.js";
+import { stateObj } from "../../state.js";
+import getHandler from "./get.js";
+describe("assureAllowed", () => {
   const throws = [
     {
       in: {
-        hostname: 'fail',
-        allowedHost: 'fail2',
+        hostname: "fail",
+        allowedHost: "fail2",
       },
     },
     {
       in: {
         query: {
-          id: 'fail',
+          id: "fail",
         },
         allowedQuery: {
-          id: 'fail2',
+          id: "fail2",
         },
       },
     },
@@ -25,23 +29,23 @@ describe('assureAllowed', () => {
   const passes = [
     {
       in: {
-        hostname: 'pass',
-        allowedHost: 'pass',
+        hostname: "pass",
+        allowedHost: "pass",
         query: {
-          id: 'pass',
+          id: "pass",
         },
         allowedQuery: {
-          id: 'pass',
+          id: "pass",
         },
       },
     },
     {
       in: {
         query: {
-          id: 'pass',
+          id: "pass",
         },
         allowedQuery: {
-          id: 'pass',
+          id: "pass",
         },
       },
     },
@@ -51,7 +55,7 @@ describe('assureAllowed', () => {
     it(`throws from input ${JSON.stringify(testInput)}`, () => {
       expect(() => {
         assureAllowed({ ...testInput });
-      }).toThrow('not allowed fool!');
+      }).toThrow("not allowed fool!");
     });
   });
   passes.forEach(({ in: testInput }) => {
@@ -61,24 +65,24 @@ describe('assureAllowed', () => {
   });
 });
 
-describe('allowAccessHandler', () => {
-  const EXPIRED_APP_ID = 'expired-app';
-  const NON_EXPIRED_APP_ID = 'g2g-app';
+describe("allowAccessHandler", () => {
+  const EXPIRED_APP_ID = "expired-app";
+  const NON_EXPIRED_APP_ID = "g2g-app";
   beforeAll(() => {
     let expDate = new Date();
     let forwardDate = new Date();
     const pastDate = expDate.getDate() - 7;
     const futureDate = forwardDate.getDate() + 100;
     expDate.setDate(pastDate);
-    forwardDate.setDate(futureDate)
+    forwardDate.setDate(futureDate);
     stateObj[`${EXPIRED_APP_ID}`] = expDate;
     stateObj[`${NON_EXPIRED_APP_ID}`] = forwardDate;
-  })
-  afterAll(() => { 
+  });
+  afterAll(() => {
     delete stateObj[`${EXPIRED_APP_ID}`];
     delete stateObj[`${NON_EXPIRED_APP_ID}`];
-  })
-  it('returns ERR: missing data', () => {
+  });
+  it("returns ERR: missing data", () => {
     const mockJsonFn = jest.fn();
     const mockRes = {
       status: () => ({
@@ -87,22 +91,25 @@ describe('allowAccessHandler', () => {
     };
     const res = allowAccessHandler({}, mockRes);
     expect(mockJsonFn).toHaveBeenCalledWith({ Error: MISSING_DATA_ERR });
-  })
-  it('returns ERR: no app registered (by default)', () => {
+  });
+  it("returns ERR: no app registered (by default)", () => {
     const mockJsonFn = jest.fn();
     const mockRes = {
       status: () => ({
         json: mockJsonFn,
       }),
     };
-    allowAccessHandler({
-      query: {
-        id: 'not-there'
-      }
-    }, mockRes);
+    allowAccessHandler(
+      {
+        query: {
+          id: "not-there",
+        },
+      },
+      mockRes,
+    );
     expect(mockJsonFn).toHaveBeenCalledWith({ Error: NO_APP_REGISTERED_ERR });
   });
-  it('returns ERR: expired app', () => {
+  it("returns ERR: expired app", () => {
     const mockJsonFn = jest.fn();
     const mockRes = {
       status: () => ({
@@ -115,13 +122,13 @@ describe('allowAccessHandler', () => {
           id: EXPIRED_APP_ID,
         },
       },
-      mockRes
+      mockRes,
     );
     expect(mockJsonFn).toHaveBeenCalledWith({ Error: APP_REG_EXP_ERR });
   });
-  it('succeeds when expired date is 1 week forward', () => {
+  it("succeeds when expired date is 1 week forward", () => {
     const mockJsonFn = jest.fn();
-    const mockTwo = jest.fn()
+    const mockTwo = jest.fn();
     const mockRes = {
       status: () => ({
         json: mockJsonFn,
@@ -134,13 +141,13 @@ describe('allowAccessHandler', () => {
           id: NON_EXPIRED_APP_ID,
         },
       },
-      mockRes
+      mockRes,
     );
     expect(mockTwo).toHaveBeenCalledWith({ appId: NON_EXPIRED_APP_ID });
   });
 });
 
-describe('get', () => { 
+describe("get", () => {
   const HOST_PROCESS_ENV = process.env;
 
   beforeEach(() => {
@@ -152,13 +159,13 @@ describe('get', () => {
     process.env = HOST_PROCESS_ENV; // Restore old environment
   });
 
-  it('gets an appId & validates the app is in stateObj', () => {
-    process.env.ALLOWED_HOST = 'test-host';
-    process.env.ALLOWED_QUERY = 'testquery';
+  it("gets an appId & validates the app is in stateObj", () => {
+    process.env.ALLOWED_HOST = "test-host";
+    process.env.ALLOWED_QUERY = "testquery";
     const mockJsonFn = jest.fn();
     const mockReq = {
-      hostname: 'test-host',
-      query: { id: 'testquery' },
+      hostname: "test-host",
+      query: { id: "testquery" },
     };
     const mockRes = {
       status: () => ({
@@ -172,9 +179,9 @@ describe('get', () => {
         calls: [[mockJsonRes]],
       },
     } = mockJsonFn;
-    expect(Object.keys(mockJsonRes)[0]).toBe('id');
-    expect(typeof mockJsonRes.id).toBe('string');
-    expect(typeof stateObj[`${mockJsonRes.id}`]).toBe('object');
+    expect(Object.keys(mockJsonRes)[0]).toBe("id");
+    expect(typeof mockJsonRes.id).toBe("string");
+    expect(typeof stateObj[`${mockJsonRes.id}`]).toBe("object");
     delete stateObj[`${mockJsonRes.id}`];
-  })
-})
+  });
+});

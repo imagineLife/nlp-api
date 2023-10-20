@@ -18,4 +18,4 @@ const summary = {
   },
 };
 
-export default summary
+export default summary;
