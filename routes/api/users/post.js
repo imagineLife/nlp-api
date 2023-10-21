@@ -1,17 +1,19 @@
 async function postAUser(req, res) {
   try {
-    const { email, firstName, lastName } = req.body;
-    await import("./../../../state.js").then(async (stateMod) => {
-      const createResult = await stateMod.get("Users").createOne({
+    const { email, firstName, lastName, password } = req.body;
+    await import('./../../../state.js').then(async (stateMod) => {
+      const usersObject = stateMod.get('Users');
+      const { salt, saltedPw } = usersObject.saltPw(password);
+
+      const createResult = await usersObject.createOne({
+        creationDate: new Date(),
         email,
         firstName,
         lastName,
-        creationDate: new Date(),
+        salt,
+        saltedPw,
       });
-      res
-        .set("Location", `/users/${createResult.insertedId}`)
-        .status(200)
-        .end();
+      res.set('Location', `/users/${createResult.insertedId}`).status(200).end();
       return;
     });
   } catch (error) {
