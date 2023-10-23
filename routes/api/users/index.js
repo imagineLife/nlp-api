@@ -1,7 +1,8 @@
 import { Router } from 'express';
 // import byIdRouter from './byId/index.js';
-import postAUser from './post.js';
 import { get } from './../../../state.js';
+import registerEmailHandler from './register.js';
+
 async function getUsers(req, res) {
   try {
     let data = await get('Users').readMany();
@@ -15,17 +16,17 @@ const usersRouter = Router();
 
 // usersRouter.use('/:userId', failOnUnwatendFields, byIdRouter);
 
-function requireUserFields({ body }, res, next) {
+function requireEmail(req, res, next) {
   // sanity checking
-  const { email, firstName, lastName, password } = body;
-  if (!email || !firstName || !lastName || !password) {
-    return res.status(422).json({ Error: 'missing required params' });
+  const { email, password } = req.body;
+  if ((!email && !password) || (!email && password)) {
+    return res.status(422).json({ Error: 'cannot register' });
   }
   next();
 }
 
 usersRouter
   // failOnUnwatendFields on both routes
-  .get('/', getUsers)
-  .post('/', requireUserFields, postAUser);
+  .post('/register', requireEmail, registerEmailHandler)
+  .get('/', getUsers);
 export default usersRouter;
