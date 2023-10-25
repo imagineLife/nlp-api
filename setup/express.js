@@ -1,6 +1,6 @@
-import express from "express";
-import cors from "cors";
-import registerRoutes from "./../routes/index.js";
+import express from 'express';
+import cors from 'cors';
+import registerRoutes from './../routes/index.js';
 
 export default function setupExpress() {
   const DEFAULT_PORT = 3000;
@@ -11,10 +11,8 @@ export default function setupExpress() {
     Middlewares
   */
   expressObj.use(cors());
-  expressObj.use(express.json({ limit: "15mb" }));
-  // expressObj.use((req, res, next) => {
-  //   next()
-  // })
+  expressObj.use(express.json({ limit: '15mb' }));
+
   /*
     routes
   */

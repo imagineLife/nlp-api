@@ -1,7 +1,7 @@
 # USE THIS to debug!
 # CMD ["/bin/sh", "-c", "pwd; ls -la; pwd;"]
 
-FROM node:18-slim
+FROM node:20-slim
 WORKDIR /app
 COPY package.json package-lock.json  ./
 RUN npm install
@@ -9,6 +9,7 @@ RUN npm install
 COPY index.js state.js ./
 COPY lib/ ./lib
 COPY routes/ ./routes/
+COPY middleware/ ./middleware/
 COPY setup/ ./setup/
 EXPOSE 3000
 
