@@ -9,9 +9,9 @@
     "lint:check": "eslint .",
     "lint:fix": "eslint --fix .",
     "local": "nodemon .",
-    "local-node": "NODE_ENV=develop ALLOWED_HOST=localhost ALLOWED_QUERY=local-gats node .",
+    "local-node": "NODE_ENV=develop ALLOWED_HOST=localhost ALLOWED_QUERY=local-gats nodemon .",
     "start": "NODE_ENV=develop ALLOWED_HOST=$ALLOWED_HOST ALLOWED_QUERY=$ALLOWED_QUERY node .",
-    "start-dev": "ALLOWED_HOST=$ALLOWED_HOST ALLOWED_QUERY=$ALLOWED_QUERY nodemon .",
+    "start-dev": "NODE_ENV=develop ALLOWED_HOST=$ALLOWED_HOST ALLOWED_QUERY=$ALLOWED_QUERY nodemon .",
     "test": "NODE_ENV=test node --experimental-vm-modules node_modules/jest/bin/jest.js",
     "test:coverage": "NODE_ENV=test node --experimental-vm-modules node_modules/jest/bin/jest.js --coverage --runInBand"
   },
@@ -44,10 +44,10 @@
   "jest": {
     "coverageThreshold": {
       "global": {
-        "statements": 95,
+        "statements": 96,
         "branches": 89,
-        "functions": 92,
-        "lines": 95
+        "functions": 95,
+        "lines": 96
       }
     },
     "coveragePathIgnorePatterns": [

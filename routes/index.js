@@ -8,6 +8,7 @@ function requireRegisteredClient(req, res, next) {
     return next();
   }
 
+  // TODO: require a registered client in req.session
   return next();
 }
 
