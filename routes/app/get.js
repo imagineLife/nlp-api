@@ -1,6 +1,6 @@
-import { randomUUID } from "crypto";
-import assureAllowed from "./assureAllowed.js";
-import { stateObj } from "./../../state.js";
+import { randomUUID } from 'crypto';
+import assureAllowed from './assureAllowed.js';
+import { stateObj } from './../../state.js';
 
 const APP_EXP_MINUTES = 2;
 
@@ -30,7 +30,11 @@ export default function getHandler(req, res) {
 
   const { appId, expDate } = createAppDetails(APP_EXP_MINUTES);
 
+  // store in state
   stateObj[`${appId}`] = expDate;
+  // stateObj[`${appId}`] = {
+  //   registrationExpires: expDate,
+  // };
 
   return res.status(200).json({ id: appId });
 }

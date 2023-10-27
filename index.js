@@ -3,6 +3,8 @@ import { expressSetup, setupDB, registerDbCollections, serverKiller } from './se
 import { buildThemes } from './lib/index.js';
 
 async function setup() {
+  console.log('process.pid:', process.pid);
+
   // env
   dotenvConfig();
   console.log('ENV: config done');
