@@ -1,9 +1,9 @@
-import { stateObj } from "./../../state.js";
+import { stateObj } from './../../state.js';
 
-export const MISSING_DATA_ERR = "missing required data to allow access";
+export const MISSING_DATA_ERR = 'missing required data to allow access';
 export const NO_APP_REGISTERED_ERR =
-  "No App Registration stored for this instance, try starting over!";
-export const APP_REG_EXP_ERR = "App Registration Expired, try starting over!";
+  'No App Registration stored for this instance, try starting over!';
+export const APP_REG_EXP_ERR = 'App Registration Expired, try starting over!';
 export default function allowAccessHandler(req, res) {
   /*
     Error Handling
@@ -28,5 +28,9 @@ export default function allowAccessHandler(req, res) {
   }
 
   delete stateObj[`${appId}`];
+  req.session = {
+    ...req?.session,
+    appId,
+  };
   return res.status(200).send({ appId });
 }
