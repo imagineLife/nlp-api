@@ -2,7 +2,7 @@ import { ObjectId } from 'mongodb';
 
 async function getAnalytics(req, res) {
   try {
-    const stateModule = await import('../../../../state.js');
+    const stateModule = await import('../../../../../state.js');
     let foundObj = await stateModule.get('Speeches').findOne(
       { _id: new ObjectId(req.params.SpeechId) },
       {
