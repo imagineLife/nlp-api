@@ -28,6 +28,9 @@ export default function allowAccessHandler(req, res) {
   }
 
   delete stateObj[`${appId}`];
-  req.session.appId = appId;
+  req.session = {
+    ...req?.session,
+    appId,
+  };
   return res.status(200).send({ appId });
 }
