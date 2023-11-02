@@ -2,20 +2,27 @@ import { Router } from 'express';
 import { getAnalytics } from './getAnalytics.js';
 const speechAnalyticsRouter = Router({ mergeParams: true });
 
-// function getSpeechAnalytics(req, res) {
-//   res.status(200).json({ horse: 'dog' });
-//   return;
-// }
-
-function runNamedAnalytics(req, res) {
-  console.log({
-    speechId: req?.params?.SpeechId,
-    analyticName: req?.params?.analyticName,
-  });
-
+function runNamedAnalyticsHandler(req, res) {
   return res.status(200).json({ test: 'here' });
 }
-speechAnalyticsRouter.get('/:analyticName/segmented/run', runNamedAnalytics);
+
+const allowedAnalytics = {
+  bigrams: true,
+};
+function onlyAllowedAnalytic(req, res, next) {
+  if (!allowedAnalytics[req.params.analyticName]) {
+    res.status(422).json({ Error: 'Bad Analytic name' });
+    return;
+  } else {
+    next();
+  }
+}
+
+speechAnalyticsRouter.get(
+  '/:analyticName/segmented/run',
+  onlyAllowedAnalytic,
+  runNamedAnalyticsHandler
+);
 speechAnalyticsRouter.get('/', getAnalytics);
 
 export default speechAnalyticsRouter;

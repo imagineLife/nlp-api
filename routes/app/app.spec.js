@@ -89,7 +89,7 @@ describe('allowAccessHandler', () => {
         json: mockJsonFn,
       }),
     };
-    const res = allowAccessHandler({}, mockRes);
+    allowAccessHandler({}, mockRes);
     expect(mockJsonFn).toHaveBeenCalledWith({ Error: MISSING_DATA_ERR });
   });
   it('returns ERR: no app registered (by default)', () => {
@@ -140,6 +140,7 @@ describe('allowAccessHandler', () => {
         query: {
           id: NON_EXPIRED_APP_ID,
         },
+        session: {},
       },
       mockRes
     );
