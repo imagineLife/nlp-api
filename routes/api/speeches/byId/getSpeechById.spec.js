@@ -33,10 +33,6 @@ describe('speeches byId', () => {
     insertedSpeechId = location.split('/')[2];
   });
 
-  // afterEach(() => {
-  //   jest.resetModules();
-  // });
-
   afterAll(async () => {
     console.log('closing app');
     await app.close();
@@ -85,5 +81,18 @@ describe('speeches byId', () => {
       });
     expect(statusCode).toBe(500);
     expect(body).toEqual({ Good: 'Lord' });
+  });
+
+  it('GET api/speeches/:SpeechId/analytics/bigrams/segmented/run returns 200', async () => {
+    let apiRes = await supertest(app).get(
+      `${SPEECHES_URL}/${insertedSpeechId}/analytics/bigrams/segmented/run`
+    );
+    console.log({
+      status: apiRes.status,
+      text: apiRes.text,
+      body: { ...apiRes.body },
+    });
+
+    expect(apiRes.status).toEqual(200);
   });
 });

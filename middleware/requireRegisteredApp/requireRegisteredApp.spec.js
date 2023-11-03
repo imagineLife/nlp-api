@@ -1,6 +1,6 @@
 import { jest } from '@jest/globals';
 
-import requireRegisteredApp from './requireRegisteredApp.js';
+import requireRegisteredApp from './index.js';
 describe('requireRegisteredApp', () => {
   const HOST_PROCESS_ENV = process.env;
 

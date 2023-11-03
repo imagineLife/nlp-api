@@ -3,4 +3,6 @@
   "editor.codeActionsOnSave": {
     "source.fixAll.eslint": true,
   },
+  "javascript.suggest.autoImports": true,
+  
 }

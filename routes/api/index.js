@@ -2,7 +2,7 @@ import { Router } from 'express';
 import nlpRouter from './nlp/index.js';
 import speechesRouter from './speeches/index.js';
 import usersRouter from './users/index.js';
-import requireRegisteredApp from '../../middleware/requireRegisteredApp.js';
+import requireRegisteredApp from '../../middleware/requireRegisteredApp/index.js';
 
 const routes = [
   { path: '/speeches', handler: speechesRouter },
