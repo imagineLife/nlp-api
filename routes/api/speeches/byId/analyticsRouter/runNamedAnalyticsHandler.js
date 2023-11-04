@@ -22,8 +22,6 @@ async function runNamedAnalyticsHandler(req, res) {
   // bigrams
   //
   sentences.forEach((obj) => {
-    console.log('obj');
-    console.log(obj);
     const withoutEndPunc = removePunctuation(obj.sentence);
     const analyzed = analysisLookup[req.params.analyticName](withoutEndPunc);
     obj[`${req.params.analyticName}`] = analyzed;
