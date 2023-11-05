@@ -23,3 +23,7 @@ SERVER_PORT=<a-port-for-the-api>
 
 - `cd` into this directory & build the api image: something like `docker build -t nlp-api:1 .`
 - run the image as a container: something like `docker run --name nlp --env-file <>your.env -p 3000:3000 nlp:1`
+
+## Getting Data Into The DB
+
+[Here's some thoughts](/LOADING-DATA.md) on loading data into the db
