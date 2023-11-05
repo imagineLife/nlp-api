@@ -10,8 +10,6 @@ async function postASpeech(req, res) {
   try {
     await import('./../../../state.js').then(async (stateMod) => {
       const textLessSpace = text.replace(/(\r\n|\n|\r)/gm, '');
-      console.log('textLessSpace');
-      console.log(textLessSpace);
 
       const { insertedId } = await stateMod.get('Speeches').insertOne({
         author,
