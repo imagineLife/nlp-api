@@ -87,12 +87,13 @@ describe('speeches byId', () => {
     let apiRes = await supertest(app).get(
       `${SPEECHES_URL}/${insertedSpeechId}/analytics/bigrams/segmented/run`
     );
-    console.log({
-      status: apiRes.status,
-      text: apiRes.text,
-      body: { ...apiRes.body },
-    });
+    expect(apiRes.status).toEqual(200);
+  });
 
+  it('GET api/speeches/:SpeechId/analytics/bigrams/run returns 200', async () => {
+    let apiRes = await supertest(app).get(
+      `${SPEECHES_URL}/${insertedSpeechId}/analytics/bigrams/run`
+    );
     expect(apiRes.status).toEqual(200);
   });
 });

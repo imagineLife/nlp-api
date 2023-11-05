@@ -7,7 +7,7 @@ const analysisLookup = {
   bigrams: natural.NGrams.bigrams,
 };
 
-async function runNamedAnalyticsHandler(req, res) {
+async function runAnalyticSegmented(req, res) {
   //
   // GET
   //
@@ -40,8 +40,8 @@ async function runNamedAnalyticsHandler(req, res) {
   //
   // finish
   //
-  if (matchedCount === 1) return res.status(200).json({ test: 'here' });
+  if (matchedCount === 1) return res.status(200).end();
   return res.status(500).json({ Error: 'did not modify a document' });
 }
 
-export default runNamedAnalyticsHandler;
+export default runAnalyticSegmented;

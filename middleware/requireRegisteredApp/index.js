@@ -1,5 +1,8 @@
 export default function requireRegisteredApp(req, res, next) {
-  if (process?.env?.NODE_ENV == 'test') {
+  console.log('process?.env?.UNAUTHED_API');
+  console.log(process?.env?.UNAUTHED_API);
+
+  if (process?.env?.NODE_ENV == 'test' || process?.env?.UNAUTHED_API === 'true') {
     next();
     return;
   } else {
