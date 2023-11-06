@@ -2,9 +2,10 @@ import natural from 'natural';
 import { ObjectId } from 'mongodb';
 import { get } from '../../../../../state.js';
 import removePunctuation from '../../../../../lib/textAnalysis/removePunctuation.js';
-
+import { topNBigrams } from './../../../../../lib/textAnalysis/topBigrams/index.js';
 const analysisLookup = {
   bigrams: natural.NGrams.bigrams,
+  topTenBigrams: topNBigrams(10),
 };
 
 async function runAnalyticSegmented(req, res) {
