@@ -15,36 +15,25 @@ describe('onlyAllowedAnalytic', () => {
     onlyAllowedAnalytic(mockReq, mockRes);
     expect(mockJsonFn).toHaveBeenCalledWith({ Error: 'Bad Analytic name' });
   });
-  it('calls next with "bigrams"', () => {
-    const mockReq = {
-      params: {
-        analyticName: 'bigrams',
-      },
-    };
-    const mockJsonFn = jest.fn();
-    const mockNextFn = jest.fn();
-    const mockRes = {
-      status: () => ({
-        json: mockJsonFn,
-      }),
-    };
-    onlyAllowedAnalytic(mockReq, mockRes, mockNextFn);
-    expect(mockNextFn).toHaveBeenCalled();
-  });
-  it('calls next with "topTenBigrams"', () => {
-    const mockReq = {
-      params: {
-        analyticName: 'topTenBigrams',
-      },
-    };
-    const mockJsonFn = jest.fn();
-    const mockNextFn = jest.fn();
-    const mockRes = {
-      status: () => ({
-        json: mockJsonFn,
-      }),
-    };
-    onlyAllowedAnalytic(mockReq, mockRes, mockNextFn);
-    expect(mockNextFn).toHaveBeenCalled();
+  describe('calls "next()" with...', () => {
+    const analysisTypes = ['bigrams', 'topTenBigrams', 'removeStopwords'];
+    analysisTypes.forEach((a) => {
+      it(`"${a}"`, () => {
+        const mockReq = {
+          params: {
+            analyticName: a,
+          },
+        };
+        const mockJsonFn = jest.fn();
+        const mockNextFn = jest.fn();
+        const mockRes = {
+          status: () => ({
+            json: mockJsonFn,
+          }),
+        };
+        onlyAllowedAnalytic(mockReq, mockRes, mockNextFn);
+        expect(mockNextFn).toHaveBeenCalled();
+      });
+    });
   });
 });

@@ -18,6 +18,7 @@ async function postASpeech(req, res) {
         date: new Date(date),
         analytics: {},
         creationDate: new Date(),
+        type: 'speech',
       });
       res.set('Location', `/speeches/${insertedId}`).status(200).end();
       const analyticsMod = await import('./../../../lib/index.js');

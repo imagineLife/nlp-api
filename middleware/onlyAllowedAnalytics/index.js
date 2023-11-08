@@ -2,6 +2,7 @@ export default function onlyAllowedSegmentedAnalytic(req, res, next) {
   const allowedAnalytics = {
     bigrams: true,
     topTenBigrams: true,
+    removeStopwords: true,
   };
 
   if (!allowedAnalytics[req.params.analyticName]) {

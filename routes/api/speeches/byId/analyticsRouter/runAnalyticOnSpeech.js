@@ -3,8 +3,10 @@ import { ObjectId } from 'mongodb';
 import { get } from '../../../../../state.js';
 import removePunctuation from '../../../../../lib/textAnalysis/removePunctuation.js';
 import { topNBigrams } from './../../../../../lib/textAnalysis/topBigrams/index.js';
+import removeStopwords from '../../../../../lib/textAnalysis/removeStopwords.js';
 const analysisLookup = {
   bigrams: natural.NGrams.bigrams,
+  removeStopwords,
   topTenBigrams: topNBigrams(10),
 };
 
