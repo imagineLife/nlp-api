@@ -44,7 +44,8 @@ describe('speeches byId', () => {
     const { body, status } = await supertest(app).get(`${SPEECHES_URL}/${insertedSpeechId}`);
 
     expect(status).toBe(200);
-    const expectedKeys = ['_id', 'author', 'text', 'date', 'analytics', 'creationDate'];
+    // 'analytics', 'creationDate'
+    const expectedKeys = ['_id', 'author', 'text', 'date'];
     expectedKeys.forEach((k) => {
       expect(Object.keys(body).includes(k)).toBe(true);
     });

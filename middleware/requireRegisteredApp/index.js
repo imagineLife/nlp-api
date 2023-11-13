@@ -1,7 +1,9 @@
 export default function requireRegisteredApp(req, res, next) {
-  if (process?.env?.NODE_ENV == 'test' || process?.env?.UNAUTHED_API === 'true') {
-    console.log('SKIPPING AUTH');
-
+  if (
+    process?.env?.NODE_ENV == 'test' ||
+    process?.env?.UNAUTHED_API === 'true' ||
+    req?.params?.SpeechId === 'default'
+  ) {
     next();
     return;
   } else {
