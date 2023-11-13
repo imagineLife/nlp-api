@@ -1,9 +1,5 @@
 import { ObjectId } from 'mongodb';
 async function getById(req, res) {
-  console.log('----getbyId');
-  console.log('req.params.SpeechId');
-  console.log(req.params.SpeechId);
-
   try {
     const stateModule = await import('../../../../state.js');
     let foundCursor = stateModule

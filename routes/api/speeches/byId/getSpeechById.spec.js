@@ -58,12 +58,10 @@ describe('speeches byId', () => {
   });
 
   it('GET api/speeches/:SpeechId/analytics fails: returns a 200 with bad speechId', async () => {
-    console.log('MY TEST HERE!');
-
     // body,
     const { status, body } = await supertest(app).get(`${SPEECHES_URL}/9/analytics`);
     expect(status).toBe(500);
-    expect(body).toEqual({ Error: 'bad id' });
+    expect(body).toEqual({ Error: 'bad speech id' });
   });
 
   it('GET fail: returns a 500 when module throws', async () => {
