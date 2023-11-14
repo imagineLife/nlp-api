@@ -9,6 +9,10 @@ function requireRegisteredClient(req, res, next) {
   }
 
   // TODO: require a registered client in req.session
+  console.log('----REQUIRE A REGISTERED CLIENT');
+  console.log('req?.session');
+  console.log(req?.session);
+
   return next();
 }
 

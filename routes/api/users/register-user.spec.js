@@ -22,7 +22,7 @@ describe('/api/users/register', () => {
   it('fails: 422 missing params', async () => {
     const { statusCode, body } = await supertest(app).post(REGISTER_URL);
     expect(statusCode).toBe(422);
-    expect(body.Error).toBe('cannot register');
+    expect(body.Error).toBe('not allowed');
   });
 
   it('fails: multi-step process: email then ANOTHER email + pw', async () => {

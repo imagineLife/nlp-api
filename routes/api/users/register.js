@@ -34,6 +34,7 @@ export default async function registerEmailHandler(req, res) {
         if (modifiedCount !== 1) {
           throw new Error('Cannot complete registration');
         }
+        req.session.userEmail = email;
         res.status(200).end();
         return;
       }
