@@ -18,6 +18,9 @@ function createAppDetails(expMinutes) {
 
 export default function getHandler(req, res) {
   const { query, headers } = req;
+  console.log('headers');
+  console.log(headers);
+
   let reqHost = headers.host;
   reqHost = reqHost.includes(':') ? reqHost.split(':')[0] : reqHost;
 
