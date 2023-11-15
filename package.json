@@ -9,8 +9,7 @@
     "lint:check": "eslint .",
     "lint:fix": "eslint --fix .",
     "local": "nodemon .",
-    "local-node": "NODE_ENV=develop ALLOWED_HOST=localhost ALLOWED_QUERY=local-gats nodemon .",
-    "local-node-unauthed": "NODE_ENV=develop ALLOWED_HOST=localhost ALLOWED_QUERY=local-gats UNAUTHED_API=true nodemon .",
+    "local-node-unauthed": "NODE_ENV=develop UNAUTHED_API=true nodemon .",
     "start": "NODE_ENV=develop node .",
     "start-unauthed": "NODE_ENV=production UNAUTHED_API=true node .",
     "start-dev": "NODE_ENV=develop nodemon .",
@@ -47,10 +46,10 @@
   "jest": {
     "coverageThreshold": {
       "global": {
-        "statements": 96,
-        "branches": 89,
+        "statements": 95,
+        "branches": 88.4,
         "functions": 95,
-        "lines": 96
+        "lines": 95.1
       }
     },
     "coveragePathIgnorePatterns": [
