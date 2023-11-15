@@ -165,7 +165,9 @@ describe('get', () => {
     process.env.ALLOWED_QUERY = 'testquery';
     const mockJsonFn = jest.fn();
     const mockReq = {
-      hostname: 'test-host',
+      headers: {
+        host: 'test-host',
+      },
       query: { id: 'testquery' },
     };
     const mockRes = {

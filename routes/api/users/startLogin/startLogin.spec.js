@@ -37,4 +37,11 @@ describe(`POST ${USER_EMAIL_URL}`, () => {
     const { statusCode } = await supertest(app).post(USER_EMAIL_URL).send({ email });
     expect(statusCode).toBe(200);
   });
+
+  it('with "bad" email, will succeed - silently fail', async () => {
+    const { statusCode } = await supertest(app)
+      .post(USER_EMAIL_URL)
+      .send({ email: 'not@areal.user' });
+    expect(statusCode).toBe(200);
+  });
 });
