@@ -36,6 +36,9 @@ export default function getHandler(req, res) {
   reqHost = reqHost.includes(':') ? reqHost.split(':')[0] : reqHost;
 
   console.log('----before assureAllowed');
+  console.log('headers');
+  console.log(headers);
+
   console.log({
     referrer: headers.referrer,
     reqHost,
