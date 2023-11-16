@@ -17,6 +17,13 @@ function createAppDetails(expMinutes) {
 }
 
 export function referrerOrHost(referrer, host) {
+  console.log('---referrerOrHost---');
+
+  console.log('referrer');
+  console.log(referrer);
+  console.log('host');
+  console.log(host);
+
   if (referrer) {
     return referrer.split('//')[1];
   }
@@ -27,6 +34,12 @@ export default function getHandler(req, res) {
 
   let reqHost = headers.host;
   reqHost = reqHost.includes(':') ? reqHost.split(':')[0] : reqHost;
+
+  console.log('----before assureAllowed');
+  console.log({
+    referrer,
+    reqHost,
+  });
 
   // var ip = req?.socket?.remoteAddress || req.headers['x-forwarded-for'];
   assureAllowed({
