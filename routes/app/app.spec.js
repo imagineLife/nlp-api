@@ -6,7 +6,7 @@ import allowAccessHandler, {
   APP_REG_EXP_ERR,
 } from './allowAccess.js';
 import { stateObj } from '../../state.js';
-import getHandler from './get.js';
+import getHandler, { referrerOrHost } from './get.js';
 describe('assureAllowed', () => {
   const throws = [
     {
@@ -186,5 +186,17 @@ describe('get', () => {
     expect(typeof mockJsonRes.id).toBe('string');
     expect(typeof stateObj[`${mockJsonRes.id}`]).toBe('object');
     delete stateObj[`${mockJsonRes.id}`];
+  });
+});
+
+describe('referrerOrHost', () => {
+  let hostName = 'test.test';
+  it('given referrer, returns referrer', () => {
+    let res = referrerOrHost(`http://${hostName}`, 'host');
+    expect(res).toEqual(hostName);
+  });
+  it('given NO referrer, returns hostname', () => {
+    let res = referrerOrHost(`http://${hostName}`, hostName);
+    expect(res).toEqual(hostName);
   });
 });

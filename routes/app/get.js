@@ -16,17 +16,21 @@ function createAppDetails(expMinutes) {
   return { appId, expDate };
 }
 
+export function referrerOrHost(referrer, host) {
+  if (referrer) {
+    return referrer.split('//')[1];
+  }
+  return host;
+}
 export default function getHandler(req, res) {
-  const { query, headers } = req;
-  console.log('headers');
-  console.log(headers);
+  const { query, headers, referrer } = req;
 
   let reqHost = headers.host;
   reqHost = reqHost.includes(':') ? reqHost.split(':')[0] : reqHost;
 
   // var ip = req?.socket?.remoteAddress || req.headers['x-forwarded-for'];
   assureAllowed({
-    hostname: reqHost,
+    hostname: referrerOrHost(referrer, reqHost),
     query,
     allowedHost: process?.env?.ALLOWED_HOST,
     allowedQuery: { id: process?.env?.ALLOWED_QUERY },
