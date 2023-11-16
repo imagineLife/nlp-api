@@ -35,18 +35,9 @@ export default function getHandler(req, res) {
   let reqHost = headers.host;
   reqHost = reqHost.includes(':') ? reqHost.split(':')[0] : reqHost;
 
-  console.log('----before assureAllowed');
-  console.log('headers');
-  console.log(headers);
-
-  console.log({
-    referrer: headers.referrer,
-    reqHost,
-  });
-
   // var ip = req?.socket?.remoteAddress || req.headers['x-forwarded-for'];
   assureAllowed({
-    hostname: referrerOrHost(headers.referrer, reqHost),
+    hostname: referrerOrHost(headers.referer, reqHost),
     query,
     allowedHost: process?.env?.ALLOWED_HOST,
     allowedQuery: { id: process?.env?.ALLOWED_QUERY },
