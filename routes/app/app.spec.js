@@ -127,6 +127,8 @@ describe('allowAccessHandler', () => {
     expect(mockJsonFn).toHaveBeenCalledWith({ Error: APP_REG_EXP_ERR });
   });
   it('succeeds when expired date is 1 week forward', () => {
+    console.log('MY TEST?!');
+
     const mockJsonFn = jest.fn();
     const mockTwo = jest.fn();
     const mockRes = {
@@ -144,7 +146,7 @@ describe('allowAccessHandler', () => {
       },
       mockRes
     );
-    expect(mockTwo).toHaveBeenCalledWith({ appId: NON_EXPIRED_APP_ID });
+    expect(mockTwo).toHaveBeenCalledWith(NON_EXPIRED_APP_ID);
   });
 });
 

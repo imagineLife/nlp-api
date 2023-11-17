@@ -17,14 +17,7 @@ function createAppDetails(expMinutes) {
 }
 
 export function referrerOrHost(referrer, host) {
-  console.log('---referrerOrHost---');
-
-  console.log('referrer');
-  console.log(referrer);
-  console.log('host');
-  console.log(host);
-
-  if (referrer) {
+  if (referrer && host !== 'localhost') {
     return referrer.split('//')[1];
   }
   return host;

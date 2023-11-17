@@ -15,6 +15,7 @@ export default function allowAccessHandler(req, res) {
   if (!req?.query?.id) {
     return res.status(422).json({ Error: MISSING_DATA_ERR });
   }
+
   const { id: appId } = req.query;
 
   if (!stateObj[`${appId}`]) {
@@ -29,5 +30,6 @@ export default function allowAccessHandler(req, res) {
 
   delete stateObj[`${appId}`];
   req.session.appId = appId;
-  return res.status(200).send({ appId });
+  res.status(200).send(appId);
+  return;
 }
