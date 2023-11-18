@@ -26,7 +26,8 @@ export default function registerMiddleware(expressObj) {
 
   expressObj.use(
     cors({
-      origin: 'http://localhost:8000',
+      origin:
+        process.env.NODE_ENV === 'development' ? 'http://localhost:8000' : 'https://laursen.tech',
       methods: ['POST', 'PUT', 'GET', 'OPTIONS', 'HEAD'],
       credentials: true,
     })
