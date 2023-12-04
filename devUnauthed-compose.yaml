@@ -11,8 +11,6 @@ services:
       - nlp_local_mongo.env
     build:
       context: .
-      dockerfile: dev.Dockerfile
+      dockerfile: devUnauthed.Dockerfile
     ports:
       - 3000:3000
-    # OPTIONAL: run unauthenticated api
-    command: ['npm', 'run', 'start-dev-unauthed']

@@ -1,13 +1,7 @@
 import { get } from '../../../../state.js';
 
 async function finishLogin(req, res) {
-  console.log('// - - - - - //');
-  console.log('finishLogin');
-
   if (!req?.session?.startedLogin) {
-    console.log('req?.session');
-    console.log(req?.session);
-
     res.status(422).json({ Error: 'try logging in again' });
     return;
   }
@@ -22,6 +16,7 @@ async function finishLogin(req, res) {
     res.status(422).json({ Error: 'bad password' });
     return;
   }
+
   delete req.session.startedLogin;
   req.session.authenticatedEmail = req.body.email;
   res.status(200).end();
