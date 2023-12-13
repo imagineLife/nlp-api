@@ -16,7 +16,6 @@ async function finishLogin(req, res) {
     res.status(422).json({ Error: 'bad password' });
     return;
   }
-
   delete req.session.startedLogin;
   req.session.authenticatedEmail = req.body.email;
   res.status(200).end();

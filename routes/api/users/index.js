@@ -28,15 +28,13 @@ function requireEmail(req, res, next) {
 }
 
 function getUserAuthStatus(req, res) {
-  console.log('req?.session');
-  console.log(req?.session);
-
-  return res.status(200).json({ authed: 'true' });
+  if (req?.params?.email === req?.session?.authenticatedEmail) return res.status(200).send();
+  return res.status(404).send();
 }
 usersRouter
   .post('/register', requireEmail, registerEmailHandler)
   .post('/email', requireEmail, startLogin)
   .post('/pw', requireEmail, finishLogin)
-  .get('/auth', getUserAuthStatus)
+  .get('/:email/auth', getUserAuthStatus)
   .get('/', getUsers);
 export default usersRouter;

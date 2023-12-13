@@ -36,6 +36,9 @@ export default async function registerEmailHandler(req, res) {
         }
         req.session.userEmail = email;
         res.status(200).end();
+
+        // copy "default" themes into user object for user-editable themes
+        // await usersObject.setupThemes({ email })
         return;
       }
     });
