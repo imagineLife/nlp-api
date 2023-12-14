@@ -1,31 +1,120 @@
 import { Router } from 'express';
-import { get } from './../../../state.js';
+import { Users } from './../../../state.js';
 
 const themesRouter = Router();
 
 async function getThemes(req, res) {
-  const themes = await get('Themes').readMany({}, { theme: '$_id', _id: 0, keyWords: '$words' });
+  const themes = await Users().getThemes({ email: req?.params?.email });
   res.status(200).json(themes);
   return;
 }
 
-async function getThemesByUser(req, res) {
-  const { authenticatedEmail } = req.session;
-  const requestEmail = decodeURIComponent(req.params.email);
-  if (requestEmail !== authenticatedEmail)
+function errOnBadEmail(req, res, session) {
+  try {
+    console.log('1');
+
+    const { authenticatedEmail } = session;
+    const requestEmail = req.params.email;
+    if (requestEmail !== authenticatedEmail) {
+      console.log('MEH');
+
+      res.status(422).json({ Error: 'invalid email address' });
+      return true;
+    }
+  } catch (error) {
+    console.log('MEH ERR');
     return res.status(422).json({ Error: 'invalid email address' });
-  let foundUser = await get('Users').themes({ email: authenticatedEmail });
-  // const themes = await get('Themes').readMany({}, { theme: '$_id', _id: 0, keyWords: '$words' });
+  }
+}
+async function getThemesByUser(req, res) {
+  // errOnBadEmail(req, res, req?.session);
+
+  let foundUser = await Users().getThemes({ email: req.params.email });
+  // const themes = await Users().readMany({}, { theme: '$_id', _id: 0, keyWords: '$words' });
   res.status(200).json(foundUser);
   return;
 }
 
-function createThemesByUser(req, res) {
-  return res.status(200).send('need to do this');
+async function createUserTheme(req, res) {
+  // errOnBadEmail(req, res, req?.session);
+  const created = await Users().createTheme({
+    email: req.params.email,
+    theme: req?.params.theme,
+  });
+
+  if (!created) {
+    return res.status(500).json({ Error: `cannot create theme ${req?.params?.theme}` });
+  }
+  return res.status(200).end();
+}
+
+async function deleteUserTheme(req, res) {
+  // errOnBadEmail(req, res, req?.session);
+  try {
+    let deleted = await Users().deleteTheme({
+      email: req.params.email,
+      theme: req?.params.theme,
+    });
+    if (deleted) return res.status(200).end();
+    return res.status(500).json({ Error: '?!' });
+  } catch (error) {
+    console.log(`deleteTheme Error`);
+    console.log(error);
+  }
+}
+
+async function createUserThemeValue(req, res) {
+  // errOnBadEmail(req, res, req?.session);
+  // const { authenticatedEmail } = req.session;
+  const created = await Users().createThemeValue({
+    email: req.params.email,
+    theme: req?.params.theme,
+    value: req?.params?.val,
+  });
+  if (!created)
+    return res.status(500).json({
+      Error: `cannot create value ${req?.params?.val} for theme ${req?.params?.theme}`,
+    });
+  return res.status(200);
+}
+
+async function editUserThemeValue(req, res) {
+  // errOnBadEmail(req, res, req?.session);
+  const { authenticatedEmail } = req.session;
+  const edited = await Users().editThemeValue({
+    email: authenticatedEmail,
+    theme: req?.params.theme,
+    value: req?.params?.val,
+  });
+  if (!edited) return res.status(500).json({ Error: `cannot create theme ${req?.params?.theme}` });
+  return res.status(200);
+}
+
+async function deleteUserThemeValue(req, res) {
+  // errOnBadEmail(req, res, req?.session);
+  const { authenticatedEmail } = req.session;
+  const deleted = await Users().deleteThemeValue({
+    email: authenticatedEmail,
+    theme: req?.params?.theme,
+    value: req?.params?.val,
+  });
+  if (!deleted)
+    return res
+      .status(500)
+      .json({ Error: `cannot delete theme ${req?.params?.theme} value ${req.params.val}` });
+  return res.status(200);
 }
 
 themesRouter
   .get('/:email', getThemesByUser)
-  .post('/:email', createThemesByUser)
+
+  // user themes
+  .post('/:email/:theme', createUserTheme)
+  .delete('/:email/:theme', deleteUserTheme)
+
+  // user theme values
+  .post('/:email/:theme/value/:val', createUserThemeValue)
+  .put('/:email/:theme/value/:val', editUserThemeValue)
+  .delete('/:email/:theme/value/:val', deleteUserThemeValue)
   .get('/', getThemes);
 export default themesRouter;
