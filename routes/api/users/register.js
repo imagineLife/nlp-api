@@ -34,7 +34,11 @@ export default async function registerEmailHandler(req, res) {
         if (modifiedCount !== 1) {
           throw new Error('Cannot complete registration');
         }
-        req.session.userEmail = email;
+        req.session.authenticatedEmail = email;
+
+        let setThemes = await usersObject.setThemes({ email: req.body.email });
+        console.log('setThemes');
+        console.log(setThemes);
         res.status(200).end();
 
         // copy "default" themes into user object for user-editable themes

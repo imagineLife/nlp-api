@@ -1,9 +1,5 @@
 import { get } from '../../../../state.js';
 async function startLogin(req, res) {
-  console.log('START login');
-  console.log('req?.session');
-  console.log(req?.session);
-
   let foundUser = await get('Users').readOne({ _id: req.body.email });
 
   //
@@ -20,8 +16,6 @@ async function startLogin(req, res) {
     email: req.body.email,
     pw: foundUser.password,
   };
-  console.log('req?.session');
-  console.log(req?.session);
 
   req.session;
   res.status(200).end();

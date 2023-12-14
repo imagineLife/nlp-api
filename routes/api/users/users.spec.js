@@ -24,4 +24,10 @@ describe('users', () => {
     const { statusCode } = await supertest(app).get(USERS_URL);
     expect(statusCode).toBe(200);
   });
+
+  it('GET /users/:email/auth returns 404 when not in session', async () => {
+    const MOCK_EMAIL = 'test@user.com';
+    const { statusCode } = await supertest(app).get(`${USERS_URL}/${MOCK_EMAIL}/auth`);
+    expect(statusCode).toBe(404);
+  });
 });

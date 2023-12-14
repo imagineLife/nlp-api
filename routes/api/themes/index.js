@@ -20,6 +20,12 @@ async function getThemesByUser(req, res) {
   return;
 }
 
-themesRouter.get('/:email', getThemesByUser);
-themesRouter.get('/', getThemes);
+function createThemesByUser(req, res) {
+  return res.status(200).send('need to do this');
+}
+
+themesRouter
+  .get('/:email', getThemesByUser)
+  .post('/:email', createThemesByUser)
+  .get('/', getThemes);
 export default themesRouter;
