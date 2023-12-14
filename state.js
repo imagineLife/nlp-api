@@ -12,10 +12,14 @@ let stateObj = {
   },
 };
 
+function Users() {
+  return stateObj.Collections.Users;
+}
+
 function get(collectionName) {
   if (collectionName == 'Users') return stateObj.Collections.Users;
   if (collectionName == 'Themes') return stateObj.Collections.Themes;
   return stateObj.Collections?.[`${collectionName}`]?.collection;
 }
 
-export { stateObj, get };
+export { stateObj, get, Users };
