@@ -9,23 +9,24 @@ async function getThemes(req, res) {
   return;
 }
 
-function errOnBadEmail(req, res, session) {
-  try {
-    console.log('1');
+// function errOnBadEmail(req, res, session) {
+//   try {
+//     console.log('1');
 
-    const { authenticatedEmail } = session;
-    const requestEmail = req.params.email;
-    if (requestEmail !== authenticatedEmail) {
-      console.log('MEH');
+//     const { authenticatedEmail } = session;
+//     const requestEmail = req.params.email;
+//     if (requestEmail !== authenticatedEmail) {
+//       console.log('MEH');
 
-      res.status(422).json({ Error: 'invalid email address' });
-      return true;
-    }
-  } catch (error) {
-    console.log('MEH ERR');
-    return res.status(422).json({ Error: 'invalid email address' });
-  }
-}
+//       res.status(422).json({ Error: 'invalid email address' });
+//       return true;
+//     }
+//   } catch (error) {
+//     console.log('MEH ERR');
+//     return res.status(422).json({ Error: 'invalid email address' });
+//   }
+// }
+
 async function getThemesByUser(req, res) {
   // errOnBadEmail(req, res, req?.session);
 
@@ -92,9 +93,8 @@ async function editUserThemeValue(req, res) {
 
 async function deleteUserThemeValue(req, res) {
   // errOnBadEmail(req, res, req?.session);
-  const { authenticatedEmail } = req.session;
   const deleted = await Users().deleteThemeValue({
-    email: authenticatedEmail,
+    email: req.params.email,
     theme: req?.params?.theme,
     value: req?.params?.val,
   });
@@ -105,14 +105,22 @@ async function deleteUserThemeValue(req, res) {
   return res.status(200);
 }
 
+async function getUserThemeValue(req, res) {
+  let foundUser = await Users().getThemes({ email: req.params.email });
+  // const themes = await Users().readMany({}, { theme: '$_id', _id: 0, keyWords: '$words' });
+  res.status(200).json(foundUser);
+  return;
+}
+
 themesRouter
   .get('/:email', getThemesByUser)
 
-  // user themes
+  // user theme "keys"
   .post('/:email/:theme', createUserTheme)
   .delete('/:email/:theme', deleteUserTheme)
 
-  // user theme values
+  // user theme "values"
+  .get('/:email/:theme/value/:val', getUserThemeValue)
   .post('/:email/:theme/value/:val', createUserThemeValue)
   .put('/:email/:theme/value/:val', editUserThemeValue)
   .delete('/:email/:theme/value/:val', deleteUserThemeValue)
