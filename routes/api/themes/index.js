@@ -43,10 +43,10 @@ async function createUserTheme(req, res) {
     theme: req?.params.theme,
   });
 
-  if (!created) {
-    return res.status(500).json({ Error: `cannot create theme ${req?.params?.theme}` });
-  }
-  return res.status(200).end();
+  if (created === 409) return res.status(409).end();
+  if (created === 201) return res.status(201).end();
+
+  return res.status(500).json({ Error: `cannot create theme ${req?.params?.theme}` });
 }
 
 async function deleteUserTheme(req, res) {
