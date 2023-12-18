@@ -72,11 +72,14 @@ async function createUserThemeValue(req, res) {
     theme: req?.params.theme,
     value: req?.params?.val,
   });
-  if (!created)
+
+  if (!created) {
     return res.status(500).json({
       Error: `cannot create value ${req?.params?.val} for theme ${req?.params?.theme}`,
     });
-  return res.status(200);
+  } else {
+    return res.status(200).end();
+  }
 }
 
 async function editUserThemeValue(req, res) {
@@ -98,11 +101,13 @@ async function deleteUserThemeValue(req, res) {
     theme: req?.params?.theme,
     value: req?.params?.val,
   });
-  if (!deleted)
+  if (!deleted) {
     return res
       .status(500)
       .json({ Error: `cannot delete theme ${req?.params?.theme} value ${req.params.val}` });
-  return res.status(200);
+  } else {
+    return res.status(200);
+  }
 }
 
 async function getUserThemeValue(req, res) {
