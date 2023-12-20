@@ -4,6 +4,7 @@ import { get } from './../../../state.js';
 import registerEmailHandler from './register.js';
 import startLogin from './startLogin/index.js';
 import finishLogin from './finishLogin/index.js';
+import { userByIdRouter } from './byId/index.js';
 
 async function getUsers(req, res) {
   let data = await get('Users').readMany();
@@ -21,14 +22,10 @@ function requireEmail(req, res, next) {
   next();
 }
 
-function getUserAuthStatus(req, res) {
-  if (req?.params?.email === req?.session?.authenticatedEmail) return res.status(200).send();
-  return res.status(404).send();
-}
 usersRouter
   .post('/register', requireEmail, registerEmailHandler)
   .post('/email', requireEmail, startLogin)
   .post('/pw', requireEmail, finishLogin)
-  .get('/:email/auth', getUserAuthStatus)
-  .get('/', getUsers);
+  .get('/', getUsers)
+  .use('/:email', userByIdRouter);
 export default usersRouter;
