@@ -84,14 +84,18 @@ async function createUserThemeValue(req, res) {
 
 async function editUserThemeValue(req, res) {
   // errOnBadEmail(req, res, req?.session);
-  const { authenticatedEmail } = req.session;
+  // const { authenticatedEmail } = req.session;
   const edited = await Users().editThemeValue({
-    email: authenticatedEmail,
+    email: req?.params?.email,
     theme: req?.params.theme,
     value: req?.params?.val,
+    newValue: req?.body?.value,
   });
-  if (!edited) return res.status(500).json({ Error: `cannot create theme ${req?.params?.theme}` });
-  return res.status(200);
+  console.log('edited');
+  console.log(edited);
+
+  if (!edited) return res.status(500).json({ Error: `cannot edit theme ${req?.params?.theme}` });
+  return res.status(200).end();
 }
 
 async function deleteUserThemeValue(req, res) {
@@ -101,12 +105,15 @@ async function deleteUserThemeValue(req, res) {
     theme: req?.params?.theme,
     value: req?.params?.val,
   });
+  console.log('deleted');
+  console.log(deleted);
+
   if (!deleted) {
     return res
       .status(500)
       .json({ Error: `cannot delete theme ${req?.params?.theme} value ${req.params.val}` });
   } else {
-    return res.status(200);
+    return res.status(200).end();
   }
 }
 
