@@ -67,7 +67,7 @@ async function createUserThemeValue(req, res) {
   const created = await Users().createThemeValue({
     email: req.params.email,
     theme: req?.params.theme,
-    value: req?.params?.val,
+    value: req?.body?.value,
   });
 
   if (!created) {
@@ -88,8 +88,6 @@ async function editUserThemeValue(req, res) {
     value: req?.params?.val,
     newValue: req?.body?.value,
   });
-  console.log('edited');
-  console.log(edited);
 
   if (!edited) return res.status(500).json({ Error: `cannot edit theme ${req?.params?.theme}` });
   return res.status(200).end();
@@ -114,27 +112,28 @@ async function deleteUserThemeValue(req, res) {
   }
 }
 
-async function getUserThemeValue(req, res) {
-  let foundUser = await Users().getThemes({ email: req.params.email });
-  // const themes = await Users().readMany({}, { theme: '$_id', _id: 0, keyWords: '$words' });
-  res.status(200).json(foundUser);
-  return;
-}
+// async function getUserThemeValue(req, res) {
+//   let foundUser = await Users().getThemes({ email: req.params.email });
+//   // const themes = await Users().readMany({}, { theme: '$_id', _id: 0, keyWords: '$words' });
+//   res.status(200).json(foundUser);
+//   return;
+// }
 
 const userByIdRouter = new Router({ mergeParams: true });
+
+const userThemeDetailRouter = new Router({ mergeParams: true });
+
+userThemeDetailRouter
+  .delete('/', deleteUserTheme)
+  // .get('/value/:val', getUserThemeValue)
+  .post('/values', createUserThemeValue)
+  .put('/values/:val', editUserThemeValue)
+  .delete('/values/:val', deleteUserThemeValue);
 
 userByIdRouter
   .get('/auth', getUserAuthStatus)
   .get('/themes', getThemesByUser)
-
-  // user theme "keys"
   .post('/themes', createUserTheme)
-  .delete('/themes/:theme', deleteUserTheme)
-
-  // user theme "values"
-  .get('/themes/:theme/value/:val', getUserThemeValue)
-  .post('/themes/:theme/value/:val', createUserThemeValue)
-  .put('/themes/:theme/value/:val', editUserThemeValue)
-  .delete('/themes/:theme/value/:val', deleteUserThemeValue);
+  .use('/themes/:theme', userThemeDetailRouter);
 
 export { userByIdRouter };
