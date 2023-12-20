@@ -8,10 +8,10 @@
     "format:write": "prettier --write .",
     "lint:check": "eslint .",
     "lint:fix": "eslint --fix .",
-    "start": "NODE_ENV=develop node .",
+    "start": "NODE_ENV=development node .",
     "start-unauthed": "NODE_ENV=production UNAUTHED_API=true node .",
-    "start-dev": "NODE_ENV=develop nodemon .",
-    "start-dev-unauthed": "NODE_ENV=develop UNAUTHED_API=true nodemon .",
+    "start-dev": "NODE_ENV=development nodemon .",
+    "start-dev-unauthed": "NODE_ENV=development UNAUTHED_API=true nodemon .",
     "test": "NODE_ENV=test node --experimental-vm-modules node_modules/jest/bin/jest.js",
     "test:coverage": "NODE_ENV=test node --experimental-vm-modules node_modules/jest/bin/jest.js --coverage --runInBand"
   },

@@ -1,8 +1,8 @@
 // hmm
 const speechesFields = new Map();
-speechesFields.set("text", true);
-speechesFields.set("author", true);
-speechesFields.set("date", true);
+speechesFields.set('text', true);
+speechesFields.set('author', true);
+speechesFields.set('date', true);
 
 let stateObj = {
   themeMaps: {},
@@ -12,10 +12,14 @@ let stateObj = {
   },
 };
 
-function get(collectionName) {
-  if (collectionName !== "Users")
-    return stateObj.Collections?.[`${collectionName}`]?.collection;
+function Users() {
   return stateObj.Collections.Users;
 }
 
-export { stateObj, get };
+function get(collectionName) {
+  if (collectionName == 'Users') return stateObj.Collections.Users;
+  if (collectionName == 'Themes') return stateObj.Collections.Themes;
+  return stateObj.Collections?.[`${collectionName}`]?.collection;
+}
+
+export { stateObj, get, Users };

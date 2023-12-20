@@ -6,17 +6,11 @@ import startLogin from './startLogin/index.js';
 import finishLogin from './finishLogin/index.js';
 
 async function getUsers(req, res) {
-  try {
-    let data = await get('Users').readMany();
-    return res.status(200).json(data);
-  } catch (error) {
-    res.status(500).send('API ERROR');
-  }
+  let data = await get('Users').readMany();
+  return res.status(200).json(data);
 }
 
 const usersRouter = Router();
-
-// usersRouter.use('/:userId', failOnUnwatendFields, byIdRouter);
 
 function requireEmail(req, res, next) {
   // sanity checking
@@ -27,9 +21,14 @@ function requireEmail(req, res, next) {
   next();
 }
 
+function getUserAuthStatus(req, res) {
+  if (req?.params?.email === req?.session?.authenticatedEmail) return res.status(200).send();
+  return res.status(404).send();
+}
 usersRouter
   .post('/register', requireEmail, registerEmailHandler)
   .post('/email', requireEmail, startLogin)
   .post('/pw', requireEmail, finishLogin)
+  .get('/:email/auth', getUserAuthStatus)
   .get('/', getUsers);
 export default usersRouter;

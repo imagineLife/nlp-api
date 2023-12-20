@@ -22,7 +22,6 @@ describe('speeches byId', () => {
     // }));
 
     const {
-      statusCode,
       headers: { location },
     } = await supertest(app).post(SPEECHES_URL).send({
       text: 'This is a test speech. This is the second sentence of the test speech.',
@@ -64,6 +63,20 @@ describe('speeches byId', () => {
     expect(body).toEqual({ Error: 'bad speech id' });
   });
 
+  it('GET api/speeches/:SpeechId/analytics/bigrams/segmented/run returns 200', async () => {
+    let apiRes = await supertest(app).get(
+      `${SPEECHES_URL}/${insertedSpeechId}/analytics/bigrams/segmented/run`
+    );
+    expect(apiRes.status).toEqual(200);
+  });
+
+  it('GET api/speeches/:SpeechId/analytics/bigrams/run returns 200', async () => {
+    let apiRes = await supertest(app).get(
+      `${SPEECHES_URL}/${insertedSpeechId}/analytics/bigrams/run`
+    );
+    expect(apiRes.status).toEqual(200);
+  });
+
   it('GET fail: returns a 500 when module throws', async () => {
     jest.unstable_mockModule('./../../../../state.js', () => ({
       speeches: () => ({
@@ -82,19 +95,5 @@ describe('speeches byId', () => {
       });
     expect(statusCode).toBe(500);
     expect(body).toEqual({ Good: 'Lord' });
-  });
-
-  it('GET api/speeches/:SpeechId/analytics/bigrams/segmented/run returns 200', async () => {
-    let apiRes = await supertest(app).get(
-      `${SPEECHES_URL}/${insertedSpeechId}/analytics/bigrams/segmented/run`
-    );
-    expect(apiRes.status).toEqual(200);
-  });
-
-  it('GET api/speeches/:SpeechId/analytics/bigrams/run returns 200', async () => {
-    let apiRes = await supertest(app).get(
-      `${SPEECHES_URL}/${insertedSpeechId}/analytics/bigrams/run`
-    );
-    expect(apiRes.status).toEqual(200);
   });
 });
