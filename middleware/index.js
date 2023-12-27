@@ -19,7 +19,7 @@ export default function registerMiddleware(expressObj) {
     cookie: {
       // domain: process.env.NODE_ENV !== 'production' ? 'localhost' : 'laursen.tech',
       sameSite: 'none',
-      secure: false,
+      secure: true,
       expires: false,
     },
   };
