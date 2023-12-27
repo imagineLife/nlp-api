@@ -17,9 +17,9 @@ export default function registerMiddleware(expressObj) {
     saveUninitialized: true,
     // https://www.npmjs.com/package/express-session#saveuninitialized
     cookie: {
-      domain: process.env.NODE_ENV !== 'production' ? 'localhost' : 'laursen.tech',
-      sameSite: 'none',
-      secure: true,
+      // domain: process.env.NODE_ENV !== 'production' ? 'localhost' : 'laursen.tech',
+      // sameSite: 'none',
+      // secure: true,
       expires: false,
     },
   };
