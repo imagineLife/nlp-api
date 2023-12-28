@@ -1,7 +1,7 @@
 import { randomUUID } from 'crypto';
 import assureAllowed from './assureAllowed.js';
 import { stateObj } from './../../state.js';
-
+import jwt from 'jsonwebtoken';
 const APP_EXP_MINUTES = 2;
 
 function addMinutes(date, minutes) {
@@ -22,6 +22,20 @@ export function referrerOrHost(referrer, host) {
   }
   return host;
 }
+
+function createAppJwt(appId) {
+  return jwt.sign(
+    {
+      appId,
+    },
+    process.env.SERVER_SESSION_SECRET,
+    {
+      expiresIn: 120,
+      issuer: process.env.JWT_ISSUER,
+    }
+  );
+}
+
 export default function getHandler(req, res) {
   const { query, headers } = req;
 
@@ -40,9 +54,8 @@ export default function getHandler(req, res) {
 
   // store in state
   stateObj[`${appId}`] = expDate;
-  // stateObj[`${appId}`] = {
-  //   registrationExpires: expDate,
-  // };
 
-  return res.status(200).json({ id: appId });
+  return res.status(200).json({
+    appToken: createAppJwt(appId),
+  });
 }

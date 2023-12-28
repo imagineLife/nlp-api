@@ -1,5 +1,5 @@
 import { stateObj } from './../../state.js';
-
+import jwt from 'jsonwebtoken';
 export const MISSING_DATA_ERR = 'missing required data to allow access';
 export const NO_APP_REGISTERED_ERR =
   'No App Registration stored for this instance, try starting over!';
@@ -12,11 +12,20 @@ export default function allowAccessHandler(req, res) {
       - SHOULD be in "state"
       - date SHOULD NOT be before now
   */
-  if (!req?.query?.id) {
+  let clientJwt;
+  try {
+    clientJwt = req?.headers['authorization']?.split(' ')[1];
+    const decoded = jwt.verify(clientJwt, process.env.SERVER_SESSION_SECRET);
+    clientJwt = decoded;
+  } catch (error) {
     return res.status(422).json({ Error: MISSING_DATA_ERR });
   }
 
-  const { id: appId } = req.query;
+  // if (!req?.query?.id) {
+  //   return res.status(422).json({ Error: MISSING_DATA_ERR });
+  // }
+
+  const { appId } = clientJwt;
 
   if (!stateObj[`${appId}`]) {
     return res.status(422).json({ Error: NO_APP_REGISTERED_ERR });
@@ -29,7 +38,6 @@ export default function allowAccessHandler(req, res) {
   }
 
   delete stateObj[`${appId}`];
-  req.session.appId = appId;
   res.status(200).send(appId);
   return;
 }
