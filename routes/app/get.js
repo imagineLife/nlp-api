@@ -2,6 +2,7 @@ import { randomUUID } from 'crypto';
 import assureAllowed from './assureAllowed.js';
 import { stateObj } from './../../state.js';
 import jwt from 'jsonwebtoken';
+import { createHmac } from 'crypto';
 const APP_EXP_MINUTES = 2;
 
 function addMinutes(date, minutes) {
@@ -24,6 +25,8 @@ export function referrerOrHost(referrer, host) {
 }
 
 function createAppJwt(appId) {
+  const subjectSecret = 'nlp-api';
+  const subjectHash = createHmac('sha256', subjectSecret).update(appId).digest('hex');
   return jwt.sign(
     {
       appId,
@@ -32,6 +35,8 @@ function createAppJwt(appId) {
     {
       expiresIn: 120,
       issuer: process.env.JWT_ISSUER,
+      subject: subjectHash,
+      audience: 'laursen.tech/nlp',
     }
   );
 }

@@ -12,12 +12,11 @@ async function startLogin(req, res) {
   }
 
   // store user data in session
-  req.session.startedLogin = {
-    email: req.body.email,
-    pw: foundUser.password,
-  };
+  // req.session.startedLogin = {
+  //   email: req.body.email,
+  //   pw: foundUser.password,
+  // };
 
-  req.session;
   res.status(200).end();
   return;
 }

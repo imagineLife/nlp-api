@@ -21,10 +21,6 @@ export default function allowAccessHandler(req, res) {
     return res.status(422).json({ Error: MISSING_DATA_ERR });
   }
 
-  // if (!req?.query?.id) {
-  //   return res.status(422).json({ Error: MISSING_DATA_ERR });
-  // }
-
   const { appId } = clientJwt;
 
   if (!stateObj[`${appId}`]) {
@@ -38,6 +34,6 @@ export default function allowAccessHandler(req, res) {
   }
 
   delete stateObj[`${appId}`];
-  res.status(200).send(appId);
+  res.status(200).send(jwt.sign(clientJwt, process.env.SERVER_SESSION_SECRET));
   return;
 }
