@@ -37,6 +37,7 @@ export default function allowAccessHandler(req, res) {
     ) {
       let now = new Date();
       let newExpDate = now.setMinutes(now.getMinutes() + 1440);
+      clientJwt.expiresIn = newExpDate;
       stateObj[`${appId}`] = newExpDate;
     } else {
       return res.status(422).json({ Error: NO_APP_REGISTERED_ERR });

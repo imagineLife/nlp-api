@@ -3,10 +3,11 @@ services:
   nlpapi:
     container_name: nlpdev
     volumes:
-      - ./state.js:/app/state.js
       - ./lib:/app/lib
+      - ./middleware:/app/middleware
       - ./routes:/app/routes
       - ./setup:/app/setup
+      - ./state.js:/app/state.js
     env_file:
       - nlp_local_mongo.env
     build:
