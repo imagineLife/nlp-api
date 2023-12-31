@@ -1,3 +1,4 @@
+import { createHmac } from 'crypto';
 import { stateObj } from './../../state.js';
 import jwt from 'jsonwebtoken';
 export const MISSING_DATA_ERR = 'missing required data to allow access';
@@ -24,7 +25,22 @@ export default function allowAccessHandler(req, res) {
   const { appId } = clientJwt;
 
   if (!stateObj[`${appId}`]) {
-    return res.status(422).json({ Error: NO_APP_REGISTERED_ERR });
+    const subjectSecret = 'nlp-api';
+    const subjectHash = createHmac('sha256', subjectSecret).update(appId).digest('hex');
+
+    // check for token valid after server "refresh"
+    if (
+      clientJwt.iss === process.env.JWT_ISSUER &&
+      clientJwt.exp <= new Date() &&
+      clientJwt.aud === 'laursen.tech/nlp' &&
+      clientJwt.sub === subjectHash
+    ) {
+      let now = new Date();
+      let newExpDate = now.setMinutes(now.getMinutes() + 1440);
+      stateObj[`${appId}`] = newExpDate;
+    } else {
+      return res.status(422).json({ Error: NO_APP_REGISTERED_ERR });
+    }
   }
 
   const savedAppDate = stateObj[`${appId}`];
@@ -33,7 +49,8 @@ export default function allowAccessHandler(req, res) {
     return res.status(422).json({ Error: APP_REG_EXP_ERR });
   }
 
-  delete stateObj[`${appId}`];
+  // HMM!
+  // delete stateObj[`${appId}`];
   res.status(200).send(jwt.sign(clientJwt, process.env.SERVER_SESSION_SECRET));
   return;
 }

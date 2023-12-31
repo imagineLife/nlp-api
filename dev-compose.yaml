@@ -15,4 +15,5 @@ services:
     ports:
       - 3000:3000
     # OPTIONAL: run unauthenticated api
-    command: ['npm', 'run', 'start-dev-unauthed']
+    # command: ['npm', 'run', 'start-dev-unauthed']
+    command: ['npm', 'run', 'start-dev']
