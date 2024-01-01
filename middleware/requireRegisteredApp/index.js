@@ -6,7 +6,6 @@ export default function requireRegisteredApp(req, res, next) {
     process?.env?.UNAUTHED_API === 'true' ||
     req?.params?.SpeechId === 'default'
   ) {
-    console.log('SKIPPING requireRegisteredApp');
     next();
     return;
   } else {
