@@ -1,3 +1,4 @@
+import jwt from 'jsonwebtoken';
 import { Router } from 'express';
 // import byIdRouter from './byId/index.js';
 import { get } from './../../../state.js';
@@ -5,6 +6,15 @@ import registerEmailHandler from './register.js';
 import startLogin from './startLogin/index.js';
 import finishLogin from './finishLogin/index.js';
 import { userByIdRouter } from './byId/index.js';
+function expectaAndUnpackJwt(req, res, next) {
+  try {
+    const clientJwt = req.headers.authorization.split(' ')[1];
+    res.locals.jwt = jwt.decode(clientJwt, process.env.SERVER_SESSION_SECRET);
+    next();
+  } catch (error) {
+    return res.status(500).json({ Error: 'unauthenticated' });
+  }
+}
 
 async function getUsers(req, res) {
   let data = await get('Users').readMany();
@@ -24,8 +34,8 @@ function requireEmail(req, res, next) {
 
 usersRouter
   .post('/register', requireEmail, registerEmailHandler)
-  .post('/email', requireEmail, startLogin)
-  .post('/pw', requireEmail, finishLogin)
+  .post('/email', requireEmail, expectaAndUnpackJwt, startLogin)
+  .post('/pw', requireEmail, expectaAndUnpackJwt, finishLogin)
   .get('/', getUsers)
   .use('/:email', userByIdRouter);
 export default usersRouter;

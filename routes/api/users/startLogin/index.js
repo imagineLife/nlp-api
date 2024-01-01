@@ -1,3 +1,4 @@
+import jwt from 'jsonwebtoken';
 import { get } from '../../../../state.js';
 async function startLogin(req, res) {
   let foundUser = await get('Users').readOne({ _id: req.body.email });
@@ -11,13 +12,13 @@ async function startLogin(req, res) {
     return;
   }
 
-  // store user data in session
-  // req.session.startedLogin = {
-  //   email: req.body.email,
-  //   pw: foundUser.password,
-  // };
+  res.locals.jwt.startedLogin = {
+    email: req.body.email,
+    pw: foundUser.password,
+  };
 
-  res.status(200).end();
+  const resignedJwt = jwt.sign(res.locals.jwt, process.env.SERVER_SESSION_SECRET);
+  res.set('authorization', resignedJwt).status(200).end();
   return;
 }
 

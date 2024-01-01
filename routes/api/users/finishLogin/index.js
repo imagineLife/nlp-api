@@ -1,6 +1,10 @@
 import { get } from '../../../../state.js';
 
 async function finishLogin(req, res) {
+  console.log('finishLogin');
+  console.log('res.locals?.jwt');
+  console.log(res.locals?.jwt);
+
   if (!req?.session?.startedLogin) {
     res.status(422).json({ Error: 'try logging in again' });
     return;

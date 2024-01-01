@@ -15,8 +15,8 @@ export default function requireRegisteredApp(req, res, next) {
     if (!clientJwt) return res.status(500).json({ Error: 'Access Not Allowed' });
 
     const decoded = jwt.verify(clientJwt, process.env.SERVER_SESSION_SECRET);
-    console.log('decoded');
-    console.log(decoded);
+
+    // TODO: finish this update...
 
     if (!decoded?.appId) {
       return res.status(500).json({ Error: 'Access Not Allowed' });
