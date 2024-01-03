@@ -5,6 +5,7 @@ export const MISSING_DATA_ERR = 'missing required data to allow access';
 export const NO_APP_REGISTERED_ERR =
   'No App Registration stored for this instance, try starting over!';
 export const APP_REG_EXP_ERR = 'App Registration Expired, try starting over!';
+
 export default function allowAccessHandler(req, res) {
   /*
     Error Handling
@@ -25,21 +26,25 @@ export default function allowAccessHandler(req, res) {
   }
 
   const { appId } = clientJwt;
+  console.log('allowAccessHandler clientJwt');
+  console.log(clientJwt);
 
   if (!stateObj[`${appId}`]) {
+    console.log('NO token in state');
+
     const subjectSecret = 'nlp-api';
     const subjectHash = createHmac('sha256', subjectSecret).update(appId).digest('hex');
 
     // check for token valid after server "refresh"
     if (
       clientJwt.iss === process.env.JWT_ISSUER &&
-      clientJwt.exp <= new Date() &&
+      clientJwt.exp >= new Date() &&
       clientJwt.aud === 'laursen.tech/nlp' &&
       clientJwt.sub === subjectHash
     ) {
-      let now = new Date();
-      let newExpDate = now.setMinutes(now.getMinutes() + 1440);
-      clientJwt.exp = newExpDate;
+      console.log('TOKEN still valid');
+      let newExpDate = '10h';
+      clientJwt.expiresIn = newExpDate;
       stateObj[`${appId}`] = newExpDate;
     } else {
       return res.status(422).json({ Error: NO_APP_REGISTERED_ERR });

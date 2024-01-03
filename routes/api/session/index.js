@@ -3,7 +3,7 @@ import { Router } from 'express';
 
 const SessionRouter = new Router();
 
-function getUserAuthFromSession(req, res) {
+async function getUserAuthFromSession(req, res) {
   try {
     const clientJwt = jwt.decode(
       req?.headers?.authorization.split(' ')[1],
@@ -11,12 +11,16 @@ function getUserAuthFromSession(req, res) {
     );
     console.log('getUserAuthFromSession clientJwt');
     console.log(clientJwt);
-    let { sub } = clientJwt;
-    if (req?.session?.authenticatedEmail) {
-      return res.status(200).json({ email: req.session.authenticatedEmail });
+    let { email } = clientJwt;
+    if (email) {
+      return res.status(200).json({ email });
     }
+    console.log('NO JWT EMAIL');
+
     return res.status(422).end();
   } catch (error) {
+    console.log('getUserSession error:');
+    console.log(error);
     return res.status(422).end();
   }
 }
