@@ -15,11 +15,11 @@ export default function requireRegisteredApp(req, res, next) {
 
     const decoded = jwt.verify(clientJwt, process.env.SERVER_SESSION_SECRET);
 
-    // TODO: finish this update...
-
     if (!decoded?.appId) {
       return res.status(500).json({ Error: 'Access Not Allowed' });
     }
+
+    res.locals.jwt = decoded;
     return next();
   }
 }

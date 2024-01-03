@@ -1,29 +1,32 @@
+import jwt from 'jsonwebtoken';
 import { get } from '../../../../state.js';
 
 async function finishLogin(req, res) {
-  console.log('finishLogin');
-  console.log('res.locals?.jwt');
-  console.log(res.locals?.jwt);
+  try {
+    // unpack request jwt
+    const clientJwt = jwt.decode(req?.body?.emailToken, process.env.SERVER_SESSION_SECRET);
 
-  if (!req?.session?.startedLogin) {
-    res.status(422).json({ Error: 'try logging in again' });
-    return;
-  }
-  if (req.body.email !== req.session.startedLogin.email) {
-    res.status(422).json({ Error: 'bad email' });
-    return;
-  }
+    if (req.body.email !== clientJwt?.startedLogin?.email) {
+      res.status(422).json({ Error: 'mismatched request details' });
+      return;
+    }
 
-  let hashedPw = await get('Users').hashVal(req.body.password);
+    let hashedPw = await get('Users').hashVal(req.body.password);
+    if (hashedPw !== clientJwt.startedLogin.pw) {
+      res.status(422).json({ Error: 'bad password' });
+      return;
+    }
 
-  if (hashedPw !== req.session.startedLogin.pw) {
-    res.status(422).json({ Error: 'bad password' });
-    return;
+    // FINISH THIS
+    delete clientJwt.startedLogin;
+    clientJwt.email = req.body.email;
+    // jwt.authenticatedEmail = req.body.email;
+    return res.status(200).send(jwt.sign(clientJwt, process.env.SERVER_SESSION_SECRET));
+  } catch (error) {
+    console.log('finishLogin error');
+    console.log(error);
+    return res.status(500).end();
   }
-  delete req.session.startedLogin;
-  req.session.authenticatedEmail = req.body.email;
-  res.status(200).end();
-  return;
 }
 
 export default finishLogin;

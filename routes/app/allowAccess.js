@@ -19,6 +19,8 @@ export default function allowAccessHandler(req, res) {
     const decoded = jwt.verify(clientJwt, process.env.SERVER_SESSION_SECRET);
     clientJwt = decoded;
   } catch (error) {
+    console.log('jwt decode error');
+    console.log(error);
     return res.status(422).json({ Error: MISSING_DATA_ERR });
   }
 
@@ -37,7 +39,7 @@ export default function allowAccessHandler(req, res) {
     ) {
       let now = new Date();
       let newExpDate = now.setMinutes(now.getMinutes() + 1440);
-      clientJwt.expiresIn = newExpDate;
+      clientJwt.exp = newExpDate;
       stateObj[`${appId}`] = newExpDate;
     } else {
       return res.status(422).json({ Error: NO_APP_REGISTERED_ERR });

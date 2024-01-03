@@ -4,7 +4,6 @@ import speechesRouter from './speeches/index.js';
 import themesRouter from './themes/index.js';
 import usersRouter from './users/index.js';
 import sessionRouter from './session/index.js';
-// import requireRegisteredApp from '../../middleware/requireRegisteredApp/index.js';
 
 const routes = [
   { path: '/speeches', handler: speechesRouter },
@@ -15,8 +14,6 @@ const routes = [
 ];
 
 const apiRouter = Router();
-
-// requireRegisteredApp
 routes.forEach(({ path, handler }) => apiRouter.use(path, [handler]));
 
 export default apiRouter;

@@ -18,7 +18,7 @@ async function startLogin(req, res) {
   };
 
   const resignedJwt = jwt.sign(res.locals.jwt, process.env.SERVER_SESSION_SECRET);
-  res.set('authorization', resignedJwt).status(200).end();
+  res.status(200).send(resignedJwt);
   return;
 }
 
