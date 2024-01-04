@@ -7,7 +7,7 @@ export default function registerMiddleware(expressObj) {
   expressObj.use(
     cors({
       credentials: true,
-      methods: ['POST', 'PUT', 'GET', 'OPTIONS', 'HEAD'],
+      methods: ['POST', 'PUT', 'GET', 'OPTIONS', 'HEAD', 'DELETE'],
       origin,
     })
   );

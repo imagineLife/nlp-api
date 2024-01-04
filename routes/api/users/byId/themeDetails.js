@@ -70,10 +70,10 @@ async function deleteUserThemeValue(req, res) {
 }
 
 userThemeDetailRouter
-  .delete('/', deleteUserTheme)
   // .get('/value/:val', getUserThemeValue)
   .post('/values', createUserThemeValue)
   .put('/values/:val', editUserThemeValue)
-  .delete('/values/:val', deleteUserThemeValue);
+  .delete('/values/:val', deleteUserThemeValue)
+  .delete('/', deleteUserTheme);
 
 export { userThemeDetailRouter };

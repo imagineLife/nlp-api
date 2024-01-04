@@ -34,19 +34,22 @@ export default function allowAccessHandler(req, res) {
 
     const subjectSecret = 'nlp-api';
     const subjectHash = createHmac('sha256', subjectSecret).update(appId).digest('hex');
-
+    const SAME_ISSUER = clientJwt.iss === process.env.JWT_ISSUER;
+    const NOT_EXPIRED = clientJwt.exp >= new Date();
+    const RIGHT_AUD = clientJwt.aud === 'laursen.tech/nlp';
+    const RIGHT_SUB = clientJwt.sub === subjectHash;
     // check for token valid after server "refresh"
-    if (
-      clientJwt.iss === process.env.JWT_ISSUER &&
-      clientJwt.exp >= new Date() &&
-      clientJwt.aud === 'laursen.tech/nlp' &&
-      clientJwt.sub === subjectHash
-    ) {
+    if (SAME_ISSUER && NOT_EXPIRED && RIGHT_AUD && RIGHT_SUB) {
       console.log('TOKEN still valid');
       let newExpDate = '10h';
       clientJwt.expiresIn = newExpDate;
       stateObj[`${appId}`] = newExpDate;
     } else {
+      console.log('----invalid token');
+      console.log('clientJwt');
+      console.log(clientJwt);
+      console.log({ SAME_ISSUER, NOT_EXPIRED, RIGHT_AUD, RIGHT_SUB });
+
       return res.status(422).json({ Error: NO_APP_REGISTERED_ERR });
     }
   }
