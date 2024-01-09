@@ -11,7 +11,7 @@ async function deleteUserTheme(req, res) {
       theme: req?.params.theme,
     });
     if (deleted) return res.status(200).end();
-    return res.status(500).json({ Error: '?!' });
+    return res.status(500).json({ Error: 'Error deleting theme' });
   } catch (error) {
     console.log(`deleteTheme Error`);
     console.log(error);
@@ -69,11 +69,54 @@ async function deleteUserThemeValue(req, res) {
   }
 }
 
+async function editUserTheme(req, res) {
+  try {
+    // good lord...
+
+    // get current theme
+    let currentTheme = await Users().editThemeName({
+      email: req.params.email,
+      currentTheme: req.params.theme,
+      newTheme: req.body.newTheme,
+    });
+    currentTheme = await currentTheme.toArray();
+
+    // create new theme object
+    const newTheme = {
+      email: req.params.email,
+      theme: req.body.newTheme,
+      words: currentTheme[0].theme.words,
+    };
+    // insert new theme
+    const created = await Users().createTheme(newTheme);
+    if (created !== 200) {
+      console.log('Error creating a new theme');
+      return res.status(500).json({ Error: 'server error' });
+    }
+
+    // DELETE "old" theme...
+    let deleted = await Users().deleteTheme({
+      email: req.params.email,
+      theme: req?.params.theme,
+    });
+    if (!deleted) {
+      return res.status(500).json({ Error: 'Error deleting theme' });
+    }
+    return res.status(200).json();
+  } catch (error) {
+    console.log(`editTheme Error`);
+    console.log(error);
+    return res.status(500).end();
+  }
+}
+
 userThemeDetailRouter
-  // .get('/value/:val', getUserThemeValue)
   .post('/values', createUserThemeValue)
   .put('/values/:val', editUserThemeValue)
   .delete('/values/:val', deleteUserThemeValue)
+  .patch('/', editUserTheme)
   .delete('/', deleteUserTheme);
+// .get('/', getUserTheme);
+// .get('/value/:val', getUserThemeValue)
 
 export { userThemeDetailRouter };

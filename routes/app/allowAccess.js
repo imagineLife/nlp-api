@@ -42,7 +42,7 @@ export default function allowAccessHandler(req, res) {
     if (SAME_ISSUER && NOT_EXPIRED && RIGHT_AUD && RIGHT_SUB) {
       console.log('TOKEN still valid');
       let newExpDate = '10h';
-      clientJwt.expiresIn = newExpDate;
+      clientJwt.exp = newExpDate;
       stateObj[`${appId}`] = newExpDate;
     } else {
       console.log('----invalid token');
@@ -54,10 +54,12 @@ export default function allowAccessHandler(req, res) {
     }
   }
 
+  // check & update expiration date if possible...hmm...
   const savedAppDate = stateObj[`${appId}`];
   if (savedAppDate <= new Date()) {
-    delete stateObj[`${appId}`];
-    return res.status(422).json({ Error: APP_REG_EXP_ERR });
+    let a = new Date();
+    stateObj[`${appId}`] = a.setTime(a.getTime() + 10 * 60 * 60 * 1000);
+    clientJwt.exp = stateObj[`${appId}`];
   }
 
   // HMM!
