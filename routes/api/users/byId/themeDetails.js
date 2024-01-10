@@ -112,13 +112,29 @@ async function editUserTheme(req, res) {
   }
 }
 
+async function getUserTheme(req, res) {
+  try {
+    let currentTheme = await Users().getSingleTheme({
+      email: req.params.email,
+      currentTheme: req.params.theme,
+      newTheme: req.body.newTheme,
+    });
+    currentTheme = await currentTheme.toArray();
+    return res.status(200).json(currentTheme);
+  } catch (error) {
+    console.log('getUserTheme error');
+    console.log(error);
+    return res.status(500).json({ Error: 'server error' });
+  }
+}
+
 userThemeDetailRouter
   .post('/values', createUserThemeValue)
   .put('/values/:val', editUserThemeValue)
   .delete('/values/:val', deleteUserThemeValue)
+  .get('/', getUserTheme)
   .patch('/', editUserTheme)
   .delete('/', deleteUserTheme);
-// .get('/', getUserTheme);
 // .get('/value/:val', getUserThemeValue)
 
 export { userThemeDetailRouter };
