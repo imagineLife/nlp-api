@@ -71,17 +71,19 @@ async function deleteUserThemeValue(req, res) {
 
 async function editUserTheme(req, res) {
   try {
-    // good lord...
-
+    //
     // get current theme
-    let currentTheme = await Users().editThemeName({
+    //
+    let currentTheme = await Users().getSingleTheme({
       email: req.params.email,
       currentTheme: req.params.theme,
       newTheme: req.body.newTheme,
     });
     currentTheme = await currentTheme.toArray();
 
+    //
     // create new theme object
+    //
     const newTheme = {
       email: req.params.email,
       theme: req.body.newTheme,
@@ -89,7 +91,7 @@ async function editUserTheme(req, res) {
     };
     // insert new theme
     const created = await Users().createTheme(newTheme);
-    if (created !== 200) {
+    if (created !== 202) {
       console.log('Error creating a new theme');
       return res.status(500).json({ Error: 'server error' });
     }
