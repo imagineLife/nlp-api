@@ -87,11 +87,13 @@ async function editUserTheme(req, res) {
     const newTheme = {
       email: req.params.email,
       theme: req.body.newTheme,
-      words: currentTheme[0].theme.words,
+      words: currentTheme[0].words,
     };
+
     // insert new theme
     const created = await Users().createTheme(newTheme);
-    if (created !== 202) {
+
+    if (created !== 201) {
       console.log('Error creating a new theme');
       return res.status(500).json({ Error: 'server error' });
     }
@@ -104,7 +106,7 @@ async function editUserTheme(req, res) {
     if (!deleted) {
       return res.status(500).json({ Error: 'Error deleting theme' });
     }
-    return res.status(200).json();
+    return res.status(201).json();
   } catch (error) {
     console.log(`editTheme Error`);
     console.log(error);

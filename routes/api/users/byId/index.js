@@ -36,10 +36,14 @@ async function getThemesByUser(req, res) {
 
 async function createUserTheme(req, res) {
   // errOnBadEmail(req, res, req?.session);
-  const created = await Users().createTheme({
+  const createObj = {
     email: req.params.email,
     theme: req?.body?.theme,
-  });
+  };
+  if (req.body?.words) {
+    createObj.words = req.body.words;
+  }
+  const created = await Users().createTheme(createObj);
 
   if (created === 409) return res.status(409).end();
   if (created === 201) return res.status(201).end();
