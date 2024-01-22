@@ -29,9 +29,6 @@ export default function excelPost(req, res) {
 
   // EACH ANSWER: fill results object question ANSWERS array with stats
   req.body.text[0].forEach((answerRow) => {
-    console.log('answerRow');
-    console.log(answerRow);
-
     Object.keys(answerRow).forEach((answer, qIdx) => {
       const thisAnswer = answerRow[answer];
       const sentenceThemes = getSentenceThemes(thisAnswer);

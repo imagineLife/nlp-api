@@ -1,12 +1,17 @@
-import express from "express";
+import express from 'express';
 // import getHandler from './get.js';
-import sentimentHandler from "./sentiment/index.js";
+import sentimentHandler from './sentiment/index.js';
+import themesHandler from './themes/index.js';
 const nlpExpressRouter = express.Router();
 
 const nlpRoutes = [
   {
-    path: "/sentiment",
+    path: '/sentiment',
     handler: sentimentHandler,
+  },
+  {
+    path: '/themes',
+    handler: themesHandler,
   },
   /*
   ,

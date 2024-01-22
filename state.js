@@ -10,6 +10,7 @@ let stateObj = {
   fields: {
     speechFields: speechesFields,
   },
+  userData: {},
 };
 
 function Users() {

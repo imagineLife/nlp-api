@@ -33,7 +33,7 @@ function createAppJwt(appId) {
     },
     process.env.SERVER_SESSION_SECRET,
     {
-      expiresIn: '10h',
+      expiresIn: 60 * 60 * 10,
       issuer: process.env.JWT_ISSUER,
       subject: subjectHash,
       audience: 'laursen.tech/nlp',
