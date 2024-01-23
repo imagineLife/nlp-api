@@ -1,6 +1,6 @@
 import { Router } from 'express';
 import { Users } from '../../../../state.js';
-
+import { stateObj } from '../../../../state.js';
 const userThemeDetailRouter = new Router({ mergeParams: true });
 
 async function deleteUserTheme(req, res) {
@@ -10,6 +10,9 @@ async function deleteUserTheme(req, res) {
       email: req.params.email,
       theme: req?.params.theme,
     });
+    if (stateObj.userData[req.params.email].themes) {
+      delete stateObj.userData[req.params.email].themes[req?.params.theme];
+    }
     if (deleted) return res.status(200).end();
     return res.status(500).json({ Error: 'Error deleting theme' });
   } catch (error) {

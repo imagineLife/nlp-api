@@ -40,16 +40,10 @@ export default function allowAccessHandler(req, res) {
     const RIGHT_SUB = clientJwt.sub === subjectHash;
     // check for token valid after server "refresh"
     if (SAME_ISSUER && NOT_EXPIRED && RIGHT_AUD && RIGHT_SUB) {
-      console.log('TOKEN still valid');
       let newExpDate = '10h';
-      clientJwt.exp = newExpDate;
+      clientJwt.expiresIn = newExpDate;
       stateObj[`${appId}`] = newExpDate;
     } else {
-      console.log('----invalid token');
-      console.log('clientJwt');
-      console.log(clientJwt);
-      console.log({ SAME_ISSUER, NOT_EXPIRED, RIGHT_AUD, RIGHT_SUB });
-
       return res.status(422).json({ Error: NO_APP_REGISTERED_ERR });
     }
   }
@@ -58,8 +52,9 @@ export default function allowAccessHandler(req, res) {
   const savedAppDate = stateObj[`${appId}`];
   if (savedAppDate <= new Date()) {
     let a = new Date();
-    stateObj[`${appId}`] = a.setTime(a.getTime() + 10 * 60 * 60 * 1000);
-    clientJwt.exp = stateObj[`${appId}`];
+    a.setTime(a.getTime() + 10 * 60 * 60 * 1000);
+    stateObj[`${appId}`] = a;
+    clientJwt.expiresIn = '10h';
   }
 
   // HMM!
