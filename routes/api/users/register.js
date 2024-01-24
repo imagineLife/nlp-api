@@ -15,9 +15,13 @@ export default async function registerEmailHandler(req, res) {
         register email
       */
       if (email && !password) {
-        await usersObject.registerEmail({
-          email,
-        });
+        let canRegisterRes = await usersObject.canRegister({ email });
+        console.log('canRegisterRes');
+        console.log(canRegisterRes);
+
+        // await usersObject.registerEmail({
+        //   email,
+        // });
         res.status(200).end();
         return;
       }

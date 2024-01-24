@@ -9,8 +9,8 @@ async function getUserAuthFromSession(req, res) {
       req?.headers?.authorization.split(' ')[1],
       process.env.SERVER_SESSION_SECRET
     );
-    console.log('getUserAuthFromSession clientJwt');
-    console.log(clientJwt);
+    // console.log('getUserAuthFromSession clientJwt');
+    // console.log(clientJwt);
     let { email } = clientJwt;
     if (email) {
       return res.status(200).json({ email });

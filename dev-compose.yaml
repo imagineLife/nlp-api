@@ -13,6 +13,11 @@ services:
     build:
       context: .
       dockerfile: dev.Dockerfile
+    deploy:
+      resources:
+        limits:
+          cpus: '0.5'
+          memory: 512M
     ports:
       - 3000:3000
     # OPTIONAL: run unauthenticated api
