@@ -1,6 +1,6 @@
 import express from 'express';
 import cors from 'cors';
-
+import { morganMiddleware, logger } from '../lib/logger.js';
 export default function registerMiddleware(expressObj) {
   const origin =
     process.env.NODE_ENV === 'development' ? 'http://localhost:8000' : 'https://laursen.tech';
@@ -12,4 +12,6 @@ export default function registerMiddleware(expressObj) {
     })
   );
   expressObj.use(express.json({ limit: '15mb' }));
+  expressObj.use(morganMiddleware);
+  logger.info('API: middleware registered');
 }

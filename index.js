@@ -1,13 +1,13 @@
 import { config as dotenvConfig } from 'dotenv'; // see https://github.com/motdotla/dotenv#how-do-i-use-dotenv-with-import
 import { expressSetup, setupDB, registerDbCollections, serverKiller } from './setup/index.js';
 import { buildThemes } from './lib/index.js';
-
+import { logger } from './lib/logger.js';
 async function setup() {
-  console.log('process.pid:', process.pid);
+  logger.info('process.pid:', process.pid);
 
   // env
   dotenvConfig();
-  console.log('ENV: config done');
+  logger.info('ENV: config done');
 
   // db
   const DbClient = await setupDB();
@@ -21,4 +21,5 @@ async function setup() {
   serverKiller(expressObj, DbClient);
 }
 
+// setupLogger();
 setup();

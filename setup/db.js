@@ -2,6 +2,7 @@ import { DB } from './../lib/models/db/index.js';
 import { Crud } from './../lib/models/crud/index.js';
 import { User } from '../lib/models/user/index.js';
 import { stateObj } from './../state.js';
+import { logger } from '../lib/logger.js';
 /*
   - takes {host: string, port: number}
 */
@@ -58,7 +59,7 @@ function registerDbCollections(DbObj, testRegistration) {
     });
     stateObj.Collections[`${collection}`] = ThisCollection;
   });
-  console.log(`DB: Collections setup in db ${dbName}`);
+  logger.info(`DB: Collections setup in db ${dbName}`);
 }
 
 export default setupDB;

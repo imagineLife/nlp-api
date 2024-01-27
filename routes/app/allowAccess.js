@@ -35,7 +35,7 @@ export default function allowAccessHandler(req, res) {
     const subjectSecret = 'nlp-api';
     const subjectHash = createHmac('sha256', subjectSecret).update(appId).digest('hex');
     const SAME_ISSUER = clientJwt.iss === process.env.JWT_ISSUER;
-    const NOT_EXPIRED = clientJwt.exp >= new Date();
+    const NOT_EXPIRED = clientJwt.exp * 1000 >= new Date();
     const RIGHT_AUD = clientJwt.aud === 'laursen.tech/nlp';
     const RIGHT_SUB = clientJwt.sub === subjectHash;
     // check for token valid after server "refresh"

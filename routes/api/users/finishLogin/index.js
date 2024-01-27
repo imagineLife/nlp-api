@@ -17,7 +17,7 @@ async function finishLogin(req, res) {
       return;
     }
 
-    // FINISH THIS
+    // TODO: FINISH THIS
     delete clientJwt.startedLogin;
     clientJwt.email = req.body.email;
     // jwt.authenticatedEmail = req.body.email;

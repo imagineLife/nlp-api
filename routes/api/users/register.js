@@ -6,7 +6,7 @@
 */
 export default async function registerEmailHandler(req, res) {
   try {
-    const { email, password } = req.body;
+    const { email, password, jwt } = req.body;
 
     await import('./../../../state.js').then(async (stateMod) => {
       const usersObject = stateMod.get('Users');
@@ -16,12 +16,11 @@ export default async function registerEmailHandler(req, res) {
       */
       if (email && !password) {
         let canRegisterRes = await usersObject.canRegister({ email });
-        console.log('canRegisterRes');
-        console.log(canRegisterRes);
+        if (!canRegisterRes) return res.status(422).json({ Error: 'cannot register' });
 
-        // await usersObject.registerEmail({
-        //   email,
-        // });
+        await usersObject.registerEmail({
+          email,
+        });
         res.status(200).end();
         return;
       }
@@ -38,19 +37,23 @@ export default async function registerEmailHandler(req, res) {
         if (modifiedCount !== 1) {
           throw new Error('Cannot complete registration');
         }
-        req.session.authenticatedEmail = email;
 
-        let setThemes = await usersObject.setThemes({ email: req.body.email });
-        console.log('setThemes');
-        console.log(setThemes);
+        await usersObject.setThemes({ email: req.body.email });
+        // TODO: update & send jwt
+        console.log('registerEmailHandler jwt');
+        console.log('jwt');
+        console.log(jwt);
+
+        const decoded = jwt.verify(jwt, process.env.SERVER_SESSION_SECRET);
+        console.log('decoded');
+        console.log(decoded);
+
         res.status(200).end();
-
-        // copy "default" themes into user object for user-editable themes
-        // await usersObject.setupThemes({ email })
         return;
       }
     });
   } catch (error) {
+    console.log(error);
     return res.status(500).json({ Error: error.message });
   }
 }
