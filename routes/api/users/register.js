@@ -1,3 +1,5 @@
+import jwt from 'jsonwebtoken';
+import { logger } from '../../../lib/logger.js';
 /*
   NEED TO UPDATE
   - "defend"
@@ -6,7 +8,8 @@
 */
 export default async function registerEmailHandler(req, res) {
   try {
-    const { email, password, jwt } = req.body;
+    const { email, password } = req.body;
+    const clientJwt = req?.headers?.authorization.split(' ')[1];
 
     await import('./../../../state.js').then(async (stateMod) => {
       const usersObject = stateMod.get('Users');
@@ -40,20 +43,18 @@ export default async function registerEmailHandler(req, res) {
 
         await usersObject.setThemes({ email: req.body.email });
         // TODO: update & send jwt
-        console.log('registerEmailHandler jwt');
-        console.log('jwt');
-        console.log(jwt);
-
-        const decoded = jwt.verify(jwt, process.env.SERVER_SESSION_SECRET);
-        console.log('decoded');
-        console.log(decoded);
-
-        res.status(200).end();
+        const decoded = jwt.verify(clientJwt, process.env.SERVER_SESSION_SECRET);
+        decoded.email = req.body.email;
+        const newJwt = jwt.sign(decoded, process.env.SERVER_SESSION_SECRET);
+        logger.info('new JWT:');
+        logger.info(newJwt);
+        res.status(200).json({ jwt: newJwt });
         return;
       }
     });
   } catch (error) {
-    console.log(error);
+    logger.error(error);
+    logger.error(error?.cause);
     return res.status(500).json({ Error: error.message });
   }
 }

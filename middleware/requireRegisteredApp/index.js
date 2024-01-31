@@ -1,5 +1,4 @@
 import jwt from 'jsonwebtoken';
-
 export default function requireRegisteredApp(req, res, next) {
   if (
     process?.env?.NODE_ENV == 'test' ||
