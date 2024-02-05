@@ -16,7 +16,7 @@ async function getUserAuthFromSession(req, res) {
     if (email) {
       return res.status(200).json({ email });
     }
-    logger.info('NO JWT EMAIL');
+    logger.debug('NO JWT EMAIL');
 
     return res.status(422).end();
   } catch (error) {

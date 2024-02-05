@@ -44,7 +44,9 @@ export default async function registerEmailHandler(req, res) {
         await usersObject.setThemes({ email: req.body.email });
         // TODO: update & send jwt
         const decoded = jwt.verify(clientJwt, process.env.SERVER_SESSION_SECRET);
+        logger.info('decoded WITH email');
         decoded.email = req.body.email;
+        logger.info(decoded);
         const newJwt = jwt.sign(decoded, process.env.SERVER_SESSION_SECRET);
         logger.info('new JWT:');
         logger.info(newJwt);
